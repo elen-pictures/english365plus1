@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Present Continuous · Интерактивный урок</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', 'Comic Sans MS', 'Arial Rounded', sans-serif;
+      background: linear-gradient(145deg, #fde9e0 0%, #ffe6d5 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .lesson-container {
+      max-width: 900px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 48px;
+      box-shadow: 0 25px 45px rgba(0, 0, 0, 0.15), 0 10px 25px rgba(0, 0, 0, 0.12);
+      padding: 30px 25px;
+      position: relative;
+    }
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .nav-btn {
+      background: #ffd7b5;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 22px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #5e3e2b;
+      cursor: pointer;
+      box-shadow: 0 5px 0 #c28a6b;
+      transition: 0.1s linear;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 2px solid #fff4e6;
+    }
+    .nav-btn:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #c28a6b;
+    }
+    .page {
+      display: none;
+      animation: fadeIn 0.35s ease;
+    }
+    .page.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      font-size: 2.6rem;
+      color: #b45f2a;
+      text-align: center;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 0 #ffe0c0;
+    }
+    h2 {
+      font-size: 2rem;
+      color: #a0522d;
+      margin: 15px 0 15px;
+      border-left: 10px solid #ffaa5e;
+      padding-left: 18px;
+    }
+    .description-box {
+      background: #fff7ef;
+      border-radius: 35px;
+      padding: 25px 25px;
+      margin: 25px 0;
+      font-size: 1.3rem;
+      color: #4d2e1b;
+      text-align: center;
+    }
+    .marker-words {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .chip {
+      background: #ffe2c6;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      user-select: none;
+    }
+    .three-blocks {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      margin: 25px 0;
+    }
+    .block {
+      width: 150px;
+      height: 150px;
+      border-radius: 38px;
+      background: #FFB27E;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.8rem;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 14px 0 #c6713d;
+      cursor: pointer;
+      transition: 0.1s;
+      border: 3px solid #ffe4c8;
+    }
+    .block.negative { background: #8CBD7A; box-shadow: 0 14px 0 #5b8047; }
+    .block.question { background: #6CB4C4; box-shadow: 0 14px 0 #3f7280; }
+    .block span { font-size: 1rem; margin-top: 5px; background: rgba(255,255,240,0.9); color: #4e2c16; padding: 4px 12px; border-radius: 30px; font-weight: bold; }
+    .block:hover { transform: translateY(-3px); }
+    .block:active { transform: translateY(5px); box-shadow: 0 7px 0 #c6713d; }
+    .exercise-block {
+      background: #fff6ed;
+      border-radius: 28px;
+      padding: 15px;
+      margin: 20px 0;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.05);
+    }
+    .task-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 12px 0;
+      flex-wrap: wrap;
+    }
+    .builder {
+      background: white;
+      min-height: 45px;
+      border: 3px dashed #ffaa5e;
+      border-radius: 30px;
+      padding: 8px 15px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin: 5px 0;
+    }
+    .action-btn {
+      background: #ffb27e;
+      border: none;
+      border-radius: 30px;
+      padding: 10px 22px;
+      font-weight: bold;
+      color: white;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .feedback {
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    select, input[type="text"] {
+      padding: 8px 12px;
+      border-radius: 20px;
+      border: 2px solid #ffaa5e;
+      font-size: 1rem;
+      background: white;
+    }
+    .sort-bins {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 15px 0;
+    }
+    .bin {
+      background: #ffe4c8;
+      border-radius: 25px;
+      padding: 15px 20px;
+      min-height: 100px;
+      min-width: 110px;
+      text-align: center;
+      border: 3px dashed #d59b6a;
+    }
+    .pronoun-chip {
+      display: inline-block;
+      background: #fdc7a1;
+      padding: 6px 14px;
+      border-radius: 30px;
+      margin: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .option-btn {
+      background: #ffe2c6;
+      border: none;
+      border-radius: 30px;
+      padding: 8px 16px;
+      margin: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.1s;
+    }
+    .option-btn.selected {
+      background: #ffb27e;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+<div class="lesson-container" id="app">
+  <div class="top-nav">
+    <button class="nav-btn" id="goHomeBtn">🏠 Главная</button>
+    <button class="nav-btn" id="goBackBtn">↩️ Назад</button>
+  </div>
+
+  <!-- Главная -->
+  <div id="page-home" class="page active">
+    <h1>⏳ Present Continuous</h1>
+    <div class="description-box">
+      <p style="margin-bottom:10px;">Говорим о том, что происходит <strong>прямо сейчас!</strong></p>
+      <div class="marker-words">
+        <span class="chip">now</span>
+        <span class="chip">right now</span>
+        <span class="chip">at the moment</span>
+      </div>
+    </div>
+    <div style="font-size:2.2rem; text-align:center; margin:15px 0;">👦 + V-ing</div>
+    <div class="three-blocks">
+      <div class="block" data-page="affirmative">➕<br><span>Утверждение</span></div>
+      <div class="block negative" data-page="negative">➖<br><span>Отрицание</span></div>
+      <div class="block question" data-page="question">❓<br><span>Вопрос</span></div>
+    </div>
+    <!-- Сортировка местоимений -->
+    <div class="exercise-block">
+      <h3>🧩 Рассортируй местоимения по am / is / are</h3>
+      <div id="pronoun-pool" style="text-align:center; margin:10px;"></div>
+      <div class="sort-bins">
+        <div class="bin" id="bin-am"><strong>am</strong><div id="bin-am-content"></div></div>
+        <div class="bin" id="bin-is"><strong>is</strong><div id="bin-is-content"></div></div>
+        <div class="bin" id="bin-are"><strong>are</strong><div id="bin-are-content"></div></div>
+      </div>
+      <button class="action-btn" id="check-sort">✅ Проверить</button>
+      <span id="sort-feedback" class="feedback"></span>
+    </div>
+    <div style="text-align:center; margin-top:20px;">
+      <button class="nav-btn" id="goToHomework">📚 Домашнее задание</button>
+    </div>
+  </div>
+
+  <!-- Утверждение -->
+  <div id="page-affirmative" class="page">
+    <h2>➕ Утвердительные предложения</h2>
+    <p style="font-size:1.3rem;">👤 + am/is/are + V-ing</p>
+    <div id="affirm-blocks"></div>
+    <button class="nav-btn" data-page="home" style="margin-top:15px;">🏠 На главную</button>
+  </div>
+
+  <!-- Отрицание -->
+  <div id="page-negative" class="page">
+    <h2>➖ Отрицательные предложения</h2>
+    <p style="font-size:1.3rem;">👤 + am/is/are + not + V-ing</p>
+    <div id="neg-blocks"></div>
+    <button class="nav-btn" data-page="home" style="margin-top:15px;">🏠 На главную</button>
+  </div>
+
+  <!-- Вопрос -->
+  <div id="page-question" class="page">
+    <h2>❓ Вопросительные предложения</h2>
+    <p style="font-size:1.3rem;">Am/Is/Are + 👤 + V-ing?</p>
+    <div id="quest-blocks"></div>
+    <button class="nav-btn" data-page="home" style="margin-top:15px;">🏠 На главную</button>
+  </div>
+
+  <!-- Домашнее задание -->
+  <div id="page-homework" class="page">
+    <h2>📚 Домашнее задание</h2>
+    <div id="hw-blocks"></div>
+    <button class="nav-btn" data-page="home" style="margin:20px;">🏠 Вернуться</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  const pages = {
+    home: document.getElementById('page-home'),
+    affirmative: document.getElementById('page-affirmative'),
+    negative: document.getElementById('page-negative'),
+    question: document.getElementById('page-question'),
+    homework: document.getElementById('page-homework')
+  };
+  let historyStack = [];
+  function showPage(id) {
+    for (let k in pages) pages[k].classList.remove('active');
+    if (pages[id]) {
+      pages[id].classList.add('active');
+      if (id !== 'home') historyStack.push(id);
+      else historyStack = [];
+    }
+  }
+  document.getElementById('goHomeBtn').addEventListener('click', ()=> showPage('home'));
+  document.getElementById('goBackBtn').addEventListener('click', ()=>{
+    if (historyStack.length > 1) {
+      historyStack.pop();
+      const prev = historyStack[historyStack.length-1];
+      if (prev && pages[prev]) showPage(prev);
+      else showPage('home');
+    } else showPage('home');
+  });
+  document.querySelectorAll('.block[data-page]').forEach(b => b.addEventListener('click', ()=> showPage(b.dataset.page)));
+  document.getElementById('goToHomework').addEventListener('click', ()=> showPage('homework'));
+  document.querySelectorAll('.nav-btn[data-page="home"]').forEach(b => b.addEventListener('click', ()=> showPage('home')));
+
+  // === СОРТИРОВКА МЕСТОИМЕНИЙ ===
+  const pronouns = ['I','he','she','it','we','you','they'];
+  const correctBins = { am: ['I'], is: ['he','she','it'], are: ['we','you','they'] };
+  let placed = { am: [], is: [], are: [] };
+  let selectedPronoun = null;
+  function renderSortFull() {
+    const pool = document.getElementById('pronoun-pool');
+    pool.innerHTML = '';
+    pronouns.forEach(p => {
+      if (!Object.values(placed).flat().includes(p)) {
+        const chip = document.createElement('span');
+        chip.className = 'pronoun-chip';
+        chip.textContent = p;
+        chip.style.background = selectedPronoun === p ? '#ff9f5e' : '#fdc7a1';
+        chip.onclick = () => { selectedPronoun = selectedPronoun === p ? null : p; renderSortFull(); };
+        pool.appendChild(chip);
+      }
+    });
+    for (let binName of ['am','is','are']) {
+      const content = document.getElementById(`bin-${binName}-content`);
+      content.innerHTML = '';
+      placed[binName].forEach(p => {
+        const chip = document.createElement('span');
+        chip.className = 'pronoun-chip';
+        chip.textContent = p;
+        chip.onclick = () => { placed[binName] = placed[binName].filter(x => x!==p); renderSortFull(); };
+        content.appendChild(chip);
+      });
+      document.getElementById(`bin-${binName}`).onclick = () => {
+        if (selectedPronoun && !placed[binName].includes(selectedPronoun)) {
+          placed[binName].push(selectedPronoun);
+          selectedPronoun = null;
+          renderSortFull();
+        }
+      };
+    }
+  }
+  document.getElementById('check-sort').onclick = () => {
+    let correct = true;
+    for (let b in correctBins) {
+      const arr = placed[b].slice().sort().join(',');
+      const ref = correctBins[b].slice().sort().join(',');
+      if (arr !== ref) correct = false;
+    }
+    const fb = document.getElementById('sort-feedback');
+    fb.textContent = correct ? '✅ Отлично!' : '❌ Попробуй ещё';
+    fb.style.color = correct ? 'green' : '#b33';
+  };
+  renderSortFull();
+
+  // ===== УТВЕРЖДЕНИЕ =====
+  function renderAffirmativeBlocks() {
+    const container = document.getElementById('affirm-blocks');
+    // Блок 1
+    const tasks1 = [
+      { sentence: "I ___ (read) a book.", options: ["am reading", "is reading", "are reading"], correct: "am reading" },
+      { sentence: "He ___ (play) football.", options: ["am playing", "is playing", "are playing"], correct: "is playing" },
+      { sentence: "She ___ (dance) now.", options: ["am dancing", "is dancing", "are dancing"], correct: "is dancing" },
+      { sentence: "It ___ (sleep) on the sofa.", options: ["am sleeping", "is sleeping", "are sleeping"], correct: "is sleeping" },
+      { sentence: "We ___ (sing) a song.", options: ["am singing", "is singing", "are singing"], correct: "are singing" },
+      { sentence: "You ___ (draw) a cat.", options: ["am drawing", "is drawing", "are drawing"], correct: "are drawing" },
+      { sentence: "They ___ (run) in the park.", options: ["am running", "is running", "are running"], correct: "are running" },
+      { sentence: "I ___ (write) a letter.", options: ["am writing", "is writing", "are writing"], correct: "am writing" },
+      { sentence: "He ___ (swim) in the pool.", options: ["am swimming", "is swimming", "are swimming"], correct: "is swimming" },
+      { sentence: "She ___ (make) a cake.", options: ["am making", "is making", "are making"], correct: "is making" }
+    ];
+    let html = '<div class="exercise-block"><h3>✏️ Выбери правильного помощника и -ing форму</h3>';
+    tasks1.forEach((t,i)=>{
+      html += `<div class="task-row">${t.sentence.replace('___','___')} 
+        <select class="affirm-sel" data-idx="${i}"><option value="">--</option>`;
+      t.options.forEach(opt => html += `<option value="${opt}">${opt}</option>`);
+      html += `</select><span class="fb" id="fb-aff1-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-aff1">✅ Проверить</button></div>';
+
+    // Блок 2
+    const tasks2 = [
+      { words: ["The","cat","is","sleeping."] },
+      { words: ["I","am","eating","an","apple."] },
+      { words: ["He","is","riding","a","bike."] },
+      { words: ["They","are","watching","TV."] },
+      { words: ["She","is","drawing","a","house."] },
+      { words: ["We","are","reading","a","book."] },
+      { words: ["You","are","singing","a","song."] },
+      { words: ["It","is","drinking","milk."] },
+      { words: ["Mum","is","cooking","dinner."] },
+      { words: ["The","boys","are","playing."] }
+    ];
+    html += '<div class="exercise-block"><h3>🚂 Собери предложение</h3>';
+    tasks2.forEach((t,i)=>{
+      html += `<div class="task-row" id="task2-${i}">
+        <div class="word-bank bank2-${i}"></div>
+        <div class="builder build2-${i}"></div>
+        <span class="fb fb2-${i}"></span>
+      </div>`;
+    });
+    html += '<button class="action-btn" id="check-all-aff2">✅ Проверить все</button></div>';
+
+    // Блок 3
+    const tasks3 = [
+      { rus: "Она готовит.", options: ["She is cooking.", "She cooking.", "She are cooking."], correct: "She is cooking." },
+      { rus: "Я читаю.", options: ["I am reading.", "I is reading.", "I reading."], correct: "I am reading." },
+      { rus: "Он плавает.", options: ["He swimming.", "He is swimming.", "He are swimming."], correct: "He is swimming." },
+      { rus: "Мы поём.", options: ["We singing.", "We is singing.", "We are singing."], correct: "We are singing." },
+      { rus: "Кот спит.", options: ["The cat sleeping.", "The cat is sleeping.", "The cat are sleeping."], correct: "The cat is sleeping." },
+      { rus: "Они рисуют.", options: ["They drawing.", "They is drawing.", "They are drawing."], correct: "They are drawing." },
+      { rus: "Ты танцуешь.", options: ["You dancing.", "You is dancing.", "You are dancing."], correct: "You are dancing." },
+      { rus: "Она едет на велосипеде.", options: ["She is riding a bike.", "She riding a bike.", "She are riding a bike."], correct: "She is riding a bike." },
+      { rus: "Я пишу письмо.", options: ["I writing a letter.", "I am writing a letter.", "I is writing a letter."], correct: "I am writing a letter." },
+      { rus: "Мальчики играют.", options: ["The boys playing.", "The boys is playing.", "The boys are playing."], correct: "The boys are playing." }
+    ];
+    html += '<div class="exercise-block"><h3>🌐 Выбери правильный перевод</h3>';
+    tasks3.forEach((t,i)=>{
+      html += `<div class="task-row"><strong>${t.rus}</strong> `;
+      t.options.forEach((opt, j) => {
+        html += `<button class="option-btn aff3-opt" data-idx="${i}" data-value="${opt}">${opt}</button>`;
+      });
+      html += `<span class="fb aff3-fb-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-aff3">✅ Проверить</button></div>';
+
+    container.innerHTML = html;
+
+    // Логика блока 1
+    document.getElementById('check-aff1').onclick = () => {
+      const selects = document.querySelectorAll('.affirm-sel');
+      selects.forEach(sel => {
+        const idx = sel.dataset.idx;
+        const fb = document.getElementById(`fb-aff1-${idx}`);
+        if (sel.value === tasks1[idx].correct) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+
+    // Логика блока 2
+    const selectedWords = tasks2.map(() => []);
+    tasks2.forEach((t,i)=>{
+      const bank = document.querySelector(`.bank2-${i}`);
+      const builder = document.querySelector(`.build2-${i}`);
+      function renderBank(){
+        bank.innerHTML = '';
+        const shuffled = [...t.words].sort(()=>Math.random()-0.5);
+        shuffled.forEach(w=>{
+          if (!selectedWords[i].includes(w)) {
+            const chip = document.createElement('span');
+            chip.className = 'chip';
+            chip.textContent = w;
+            chip.onclick = ()=>{
+              selectedWords[i].push(w);
+              builder.textContent = selectedWords[i].join(' ');
+              bank.innerHTML = '';
+              renderBank();
+            };
+            bank.appendChild(chip);
+          }
+        });
+      }
+      builder.onclick = ()=>{
+        selectedWords[i] = [];
+        builder.textContent = '';
+        renderBank();
+      };
+      renderBank();
+    });
+    document.getElementById('check-all-aff2').onclick = () => {
+      tasks2.forEach((t,i)=>{
+        const fb = document.querySelector(`.fb2-${i}`);
+        if (selectedWords[i].join(' ') === t.words.join(' ')) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+
+    // Логика блока 3
+    document.getElementById('check-aff3').onclick = () => {
+      tasks3.forEach((t,i)=>{
+        const fb = document.querySelector(`.aff3-fb-${i}`);
+        const selected = document.querySelector(`.aff3-opt[data-idx="${i}"].selected`);
+        if (selected && selected.dataset.value === t.correct) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+    document.querySelectorAll('.aff3-opt').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = this.dataset.idx;
+        document.querySelectorAll(`.aff3-opt[data-idx="${idx}"]`).forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  }
+
+  // ===== ОТРИЦАНИЕ =====
+  function renderNegativeBlocks() {
+    const container = document.getElementById('neg-blocks');
+    // Блок 1
+    const tasks1 = [
+      { sentence: "I ___ reading.", correct: "am not" },
+      { sentence: "He ___ sleeping.", correct: "is not" },
+      { sentence: "She ___ dancing.", correct: "is not" },
+      { sentence: "It ___ eating.", correct: "is not" },
+      { sentence: "We ___ running.", correct: "are not" },
+      { sentence: "You ___ singing.", correct: "are not" },
+      { sentence: "They ___ playing.", correct: "are not" },
+      { sentence: "I ___ writing.", correct: "am not" },
+      { sentence: "He ___ swimming.", correct: "is not" },
+      { sentence: "She ___ cooking.", correct: "is not" }
+    ];
+    let html = '<div class="exercise-block"><h3>🚫 Вставь am not / is not / are not</h3>';
+    tasks1.forEach((t,i)=>{
+      html += `<div class="task-row">${t.sentence} 
+        <select class="neg-sel" data-idx="${i}"><option value="">--</option><option>am not</option><option>is not</option><option>are not</option></select>
+        <span class="fb neg-fb1-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-neg1">✅ Проверить</button></div>';
+
+    // Блок 2
+    const tasks2 = [
+      { rus: "Я не читаю.", options: ["I am not reading.", "I not reading.", "I is not reading."], correct: "I am not reading." },
+      { rus: "Он не спит.", options: ["He not sleeping.", "He is not sleeping.", "He are not sleeping."], correct: "He is not sleeping." },
+      { rus: "Она не танцует.", options: ["She not dancing.", "She is not dancing.", "She are not dancing."], correct: "She is not dancing." },
+      { rus: "Мы не бегаем.", options: ["We not running.", "We is not running.", "We are not running."], correct: "We are not running." },
+      { rus: "Они не поют.", options: ["They not singing.", "They is not singing.", "They are not singing."], correct: "They are not singing." },
+      { rus: "Кот не ест.", options: ["The cat not eating.", "The cat is not eating.", "The cat are not eating."], correct: "The cat is not eating." },
+      { rus: "Ты не рисуешь.", options: ["You not drawing.", "You is not drawing.", "You are not drawing."], correct: "You are not drawing." },
+      { rus: "Я не пишу.", options: ["I not writing.", "I am not writing.", "I is not writing."], correct: "I am not writing." },
+      { rus: "Он не плавает.", options: ["He not swimming.", "He is not swimming.", "He are not swimming."], correct: "He is not swimming." },
+      { rus: "Она не готовит.", options: ["She not cooking.", "She is not cooking.", "She are not cooking."], correct: "She is not cooking." }
+    ];
+    html += '<div class="exercise-block"><h3>🌐 Выбери правильный перевод (отрицание)</h3>';
+    tasks2.forEach((t,i)=>{
+      html += `<div class="task-row"><strong>${t.rus}</strong> `;
+      t.options.forEach((opt)=>{
+        html += `<button class="option-btn neg2-opt" data-idx="${i}" data-value="${opt}">${opt}</button>`;
+      });
+      html += `<span class="fb neg2-fb-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-neg2">✅ Проверить</button></div>';
+
+    // Блок 3
+    const tasks3 = [
+      { pos: "I am eating.", neg: "I am not eating.", wrong: "I not eating." },
+      { pos: "He is reading.", neg: "He is not reading.", wrong: "He not reading." },
+      { pos: "She is dancing.", neg: "She is not dancing.", wrong: "She not dancing." },
+      { pos: "We are running.", neg: "We are not running.", wrong: "We not running." },
+      { pos: "They are singing.", neg: "They are not singing.", wrong: "They not singing." },
+      { pos: "It is sleeping.", neg: "It is not sleeping.", wrong: "It not sleeping." },
+      { pos: "You are drawing.", neg: "You are not drawing.", wrong: "You not drawing." },
+      { pos: "I am writing.", neg: "I am not writing.", wrong: "I not writing." },
+      { pos: "He is swimming.", neg: "He is not swimming.", wrong: "He not swimming." },
+      { pos: "She is cooking.", neg: "She is not cooking.", wrong: "She not cooking." }
+    ];
+    html += '<div class="exercise-block"><h3>🙅 Выбери правильное отрицание</h3>';
+    tasks3.forEach((t,i)=>{
+      html += `<div class="task-row">${t.pos} → 
+        <button class="option-btn neg3-opt" data-idx="${i}" data-value="${t.neg}">${t.neg}</button>
+        <button class="option-btn neg3-opt" data-idx="${i}" data-value="${t.wrong}">${t.wrong}</button>
+        <span class="fb neg3-fb-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-neg3">✅ Проверить</button></div>';
+
+    container.innerHTML = html;
+
+    document.getElementById('check-neg1').onclick = () => {
+      document.querySelectorAll('.neg-sel').forEach(sel => {
+        const idx = sel.dataset.idx;
+        const fb = document.querySelector(`.neg-fb1-${idx}`);
+        if (sel.value === tasks1[idx].correct) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+    document.getElementById('check-neg2').onclick = () => {
+      tasks2.forEach((t,i)=>{
+        const fb = document.querySelector(`.neg2-fb-${i}`);
+        const selected = document.querySelector(`.neg2-opt[data-idx="${i}"].selected`);
+        if (selected && selected.dataset.value === t.correct) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+    document.querySelectorAll('.neg2-opt').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = this.dataset.idx;
+        document.querySelectorAll(`.neg2-opt[data-idx="${idx}"]`).forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+    document.getElementById('check-neg3').onclick = () => {
+      tasks3.forEach((t,i)=>{
+        const fb = document.querySelector(`.neg3-fb-${i}`);
+        const selected = document.querySelector(`.neg3-opt[data-idx="${i}"].selected`);
+        if (selected && selected.dataset.value === t.neg) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+    document.querySelectorAll('.neg3-opt').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = this.dataset.idx;
+        document.querySelectorAll(`.neg3-opt[data-idx="${idx}"]`).forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+  }
+
+  // ===== ВОПРОС =====
+  function renderQuestionBlocks() {
+    const container = document.getElementById('quest-blocks');
+    // Блок 1
+    const tasks1 = [
+      { words: ["Is","he","running?"] },
+      { words: ["Am","I","reading?"] },
+      { words: ["Is","she","dancing?"] },
+      { words: ["Are","they","playing?"] },
+      { words: ["Is","it","sleeping?"] },
+      { words: ["Are","we","singing?"] },
+      { words: ["Is","he","swimming?"] },
+      { words: ["Are","you","drawing?"] },
+      { words: ["Is","she","cooking?"] },
+      { words: ["Are","the","cats","eating?"] }
+    ];
+    let html = '<div class="exercise-block"><h3>🚂 Собери вопрос</h3>';
+    tasks1.forEach((t,i)=>{
+      html += `<div class="task-row" id="qtask1-${i}">
+        <div class="word-bank qbank1-${i}"></div>
+        <div class="builder qbuild1-${i}"></div>
+        <span class="fb qfb1-${i}"></span>
+      </div>`;
+    });
+    html += '<button class="action-btn" id="check-q1">✅ Проверить все</button></div>';
+
+    // Блок 2
+    const tasks2 = [
+      { statement: "He is running.", options: ["Is he running?", "He is running?", "Does he running?"], correct: "Is he running?" },
+      { statement: "I am reading.", options: ["Am I reading?", "I am reading?", "Do I reading?"], correct: "Am I reading?" },
+      { statement: "She is dancing.", options: ["Is she dancing?", "She is dancing?", "Does she dancing?"], correct: "Is she dancing?" },
+      { statement: "They are playing.", options: ["Are they playing?", "They are playing?", "Do they playing?"], correct: "Are they playing?" },
+      { statement: "It is sleeping.", options: ["Is it sleeping?", "It is sleeping?", "Does it sleeping?"], correct: "Is it sleeping?" },
+      { statement: "We are singing.", options: ["Are we singing?", "We are singing?", "Do we singing?"], correct: "Are we singing?" },
+      { statement: "He is swimming.", options: ["Is he swimming?", "He is swimming?", "Does he swimming?"], correct: "Is he swimming?" },
+      { statement: "You are drawing.", options: ["Are you drawing?", "You are drawing?", "Do you drawing?"], correct: "Are you drawing?" },
+      { statement: "She is cooking.", options: ["Is she cooking?", "She is cooking?", "Does she cooking?"], correct: "Is she cooking?" },
+      { statement: "The dog is eating.", options: ["Is the dog eating?", "The dog is eating?", "Does the dog eating?"], correct: "Is the dog eating?" }
+    ];
+    html += '<div class="exercise-block"><h3>❔ Выбери правильный вопрос</h3>';
+    tasks2.forEach((t,i)=>{
+      html += `<div class="task-row"><strong>${t.statement}</strong> `;
+      t.options.forEach(opt => {
+        html += `<button class="option-btn q2-opt" data-idx="${i}" data-value="${opt}">${opt}</button>`;
+      });
+      html += `<span class="fb q2-fb-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-q2">✅ Проверить</button></div>';
+
+    // Блок 3 (без "Am I singing?")
+    const tasks3 = [
+      { question: "(+) Is he dancing? 🕺", answer: "Yes, he is." },
+      { question: "(+) Is she reading? 📖", answer: "Yes, she is." },
+      { question: "(+) Are they playing? ⚽", answer: "Yes, they are." },
+      { question: "(+) Is the cat sleeping? 😴", answer: "Yes, it is." },
+      { question: "(-) Is he running? 🏃", answer: "No, he isn't." },
+      { question: "(-) Is she swimming? 🏊", answer: "No, she isn't." },
+      { question: "(-) Are we drawing? 🎨", answer: "No, we aren't." },
+      { question: "(-) Are you eating? 🍎", answer: "No, I'm not." },
+      { question: "(-) Is it drinking? 🥛", answer: "No, it isn't." }
+    ];
+    html += '<div class="exercise-block"><h3>🗣️ Выбери краткий ответ</h3>';
+    tasks3.forEach((t,i)=>{
+      html += `<div class="task-row">${t.question} 
+        <select class="q3-sel" data-idx="${i}">
+          <option value="">--</option>
+          <option>Yes, he is.</option><option>No, he isn't.</option>
+          <option>Yes, she is.</option><option>No, she isn't.</option>
+          <option>Yes, they are.</option><option>No, they aren't.</option>
+          <option>Yes, it is.</option><option>No, it isn't.</option>
+          <option>Yes, you are.</option><option>No, I'm not.</option>
+          <option>No, we aren't.</option>
+        </select>
+        <span class="fb q3-fb-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-q3">✅ Проверить</button></div>';
+    container.innerHTML = html;
+
+    // Блок 1: банки слов
+    const qselected = tasks1.map(() => []);
+    tasks1.forEach((t,i)=>{
+      const bank = document.querySelector(`.qbank1-${i}`);
+      const builder = document.querySelector(`.qbuild1-${i}`);
+      function renderBank(){
+        bank.innerHTML = '';
+        const shuffled = [...t.words].sort(()=>Math.random()-0.5);
+        shuffled.forEach(w=>{
+          if (!qselected[i].includes(w)) {
+            const chip = document.createElement('span');
+            chip.className = 'chip';
+            chip.textContent = w;
+            chip.onclick = ()=>{
+              qselected[i].push(w);
+              builder.textContent = qselected[i].join(' ');
+              bank.innerHTML = '';
+              renderBank();
+            };
+            bank.appendChild(chip);
+          }
+        });
+      }
+      builder.onclick = ()=>{
+        qselected[i] = [];
+        builder.textContent = '';
+        renderBank();
+      };
+      renderBank();
+    });
+    document.getElementById('check-q1').onclick = () => {
+      tasks1.forEach((t,i)=>{
+        const fb = document.querySelector(`.qfb1-${i}`);
+        if (qselected[i].join(' ') === t.words.join(' ')) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+
+    // Блок 2
+    document.getElementById('check-q2').onclick = () => {
+      tasks2.forEach((t,i)=>{
+        const fb = document.querySelector(`.q2-fb-${i}`);
+        const selected = document.querySelector(`.q2-opt[data-idx="${i}"].selected`);
+        if (selected && selected.dataset.value === t.correct) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+    document.querySelectorAll('.q2-opt').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = this.dataset.idx;
+        document.querySelectorAll(`.q2-opt[data-idx="${idx}"]`).forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+
+    // Блок 3
+    document.getElementById('check-q3').onclick = () => {
+      document.querySelectorAll('.q3-sel').forEach(sel => {
+        const idx = sel.dataset.idx;
+        const fb = document.querySelector(`.q3-fb-${idx}`);
+        if (sel.value === tasks3[idx].answer) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+  }
+
+  // ===== ДОМАШНЕЕ ЗАДАНИЕ =====
+  function renderHomework() {
+    const hw = document.getElementById('hw-blocks');
+    let html = '<div class="exercise-block"><h3>1. Вставь am, is или are</h3>';
+    const ex1 = [
+      { sentence: "I ___ drawing a house.", correct: "am" },
+      { sentence: "He ___ watching TV.", correct: "is" },
+      { sentence: "They ___ playing football.", correct: "are" },
+      { sentence: "The cat ___ sleeping on the sofa.", correct: "is" },
+      { sentence: "We ___ reading a funny story.", correct: "are" }
+    ];
+    ex1.forEach((t,i)=>{
+      html += `<div class="task-row">${t.sentence} 
+        <select class="hw1" data-idx="${i}"><option value="">--</option><option>am</option><option>is</option><option>are</option></select>
+        <span class="fb hw1-fb-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-hw1">✅ Проверить</button></div>';
+
+    // Упр.2
+    html += '<div class="exercise-block"><h3>2. Составь предложения из слов</h3>';
+    const ex2 = [
+      { words: ["am","I","a song","singing."], answer: "I am singing a song." },
+      { words: ["is","My sister","a bike","riding."], answer: "My sister is riding a bike." },
+      { words: ["are","The boys","running","in the park."], answer: "The boys are running in the park." },
+      { words: ["is","Mum","dinner","cooking."], answer: "Mum is cooking dinner." }
+    ];
+    ex2.forEach((t,i)=>{
+      html += `<div class="task-row" id="hw2-${i}">
+        <div class="word-bank hwbank2-${i}"></div>
+        <div class="builder hwbuild2-${i}"></div>
+        <span class="fb hw2-fb-${i}"></span>
+      </div>`;
+    });
+    html += '<button class="action-btn" id="check-hw2">✅ Проверить</button></div>';
+
+    // Упр.3
+    html += '<div class="exercise-block"><h3>3. Сделай предложения отрицательными (выбери)</h3>';
+    const ex3 = [
+      { pos: "She is eating an apple.", neg: "She is not eating an apple.", wrong: "She not eating an apple." },
+      { pos: "I am writing a letter.", neg: "I am not writing a letter.", wrong: "I not writing a letter." },
+      { pos: "They are swimming in the pool.", neg: "They are not swimming in the pool.", wrong: "They not swimming in the pool." }
+    ];
+    ex3.forEach((t,i)=>{
+      html += `<div class="task-row">${t.pos} → 
+        <button class="option-btn hw3-opt" data-idx="${i}" data-value="${t.neg}">${t.neg}</button>
+        <button class="option-btn hw3-opt" data-idx="${i}" data-value="${t.wrong}">${t.wrong}</button>
+        <span class="fb hw3-fb-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-hw3">✅ Проверить</button></div>';
+
+    // Упр.4
+    html += '<div class="exercise-block"><h3>4. Задай вопросы (выбери)</h3>';
+    const ex4 = [
+      { statement: "She is sleeping.", options: ["Is she sleeping?", "She is sleeping?", "Does she sleeping?"], correct: "Is she sleeping?" },
+      { statement: "You are drawing a picture.", options: ["Are you drawing a picture?", "You are drawing a picture?", "Do you drawing a picture?"], correct: "Are you drawing a picture?" },
+      { statement: "The dog is eating.", options: ["Is the dog eating?", "The dog is eating?", "Does the dog eating?"], correct: "Is the dog eating?" }
+    ];
+    ex4.forEach((t,i)=>{
+      html += `<div class="task-row"><strong>${t.statement}</strong> `;
+      t.options.forEach(opt => {
+        html += `<button class="option-btn hw4-opt" data-idx="${i}" data-value="${opt}">${opt}</button>`;
+      });
+      html += `<span class="fb hw4-fb-${i}"></span></div>`;
+    });
+    html += '<button class="action-btn" id="check-hw4">✅ Проверить</button></div>';
+
+    // Упр.5
+    const textParts = [
+      { before: "Look! The children ", correct: "are" },
+      { before: " playing in the garden. Mum ", correct: "is" },
+      { before: " reading a book. I ", correct: "am" },
+      { before: " drawing a picture. Dad ", correct: "is" },
+      { before: " cooking dinner. We ", correct: "are" },
+      { before: " happy." }
+    ];
+    html += '<div class="exercise-block"><h3>5. Вставь правильную форму глагола to be</h3>';
+    html += '<div class="task-row" style="flex-wrap: wrap; align-items: center;">';
+    textParts.forEach((part, idx) => {
+      html += `<span>${part.before}</span>`;
+      if (part.correct) {
+        html += `<select class="hw5" data-idx="${idx}" style="margin:0 5px;"><option value="">--</option><option>am</option><option>is</option><option>are</option></select>`;
+      }
+    });
+    html += `<span class="fb" id="hw5-fb"></span></div>`;
+    html += '<button class="action-btn" id="check-hw5">✅ Проверить</button></div>';
+
+    hw.innerHTML = html;
+
+    document.getElementById('check-hw1').onclick = () => {
+      document.querySelectorAll('.hw1').forEach(sel => {
+        const idx = sel.dataset.idx;
+        const fb = document.querySelector(`.hw1-fb-${idx}`);
+        fb.textContent = sel.value === ex1[idx].correct ? '✅' : '❌';
+        fb.style.color = sel.value === ex1[idx].correct ? 'green' : '#b33';
+      });
+    };
+
+    const hw2selected = ex2.map(() => []);
+    ex2.forEach((t,i)=>{
+      const bank = document.querySelector(`.hwbank2-${i}`);
+      const builder = document.querySelector(`.hwbuild2-${i}`);
+      function renderBank(){
+        bank.innerHTML = '';
+        const shuffled = [...t.words].sort(()=>Math.random()-0.5);
+        shuffled.forEach(w=>{
+          if (!hw2selected[i].includes(w)) {
+            const chip = document.createElement('span');
+            chip.className = 'chip';
+            chip.textContent = w;
+            chip.onclick = ()=>{
+              hw2selected[i].push(w);
+              builder.textContent = hw2selected[i].join(' ');
+              bank.innerHTML = '';
+              renderBank();
+            };
+            bank.appendChild(chip);
+          }
+        });
+      }
+      builder.onclick = ()=>{
+        hw2selected[i] = [];
+        builder.textContent = '';
+        renderBank();
+      };
+      renderBank();
+    });
+    document.getElementById('check-hw2').onclick = () => {
+      ex2.forEach((t,i)=>{
+        const fb = document.querySelector(`.hw2-fb-${i}`);
+        if (hw2selected[i].join(' ') === t.answer) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+
+    document.getElementById('check-hw3').onclick = () => {
+      ex3.forEach((t,i)=>{
+        const fb = document.querySelector(`.hw3-fb-${i}`);
+        const selected = document.querySelector(`.hw3-opt[data-idx="${i}"].selected`);
+        if (selected && selected.dataset.value === t.neg) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+    document.querySelectorAll('.hw3-opt').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = this.dataset.idx;
+        document.querySelectorAll(`.hw3-opt[data-idx="${idx}"]`).forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+
+    document.getElementById('check-hw4').onclick = () => {
+      ex4.forEach((t,i)=>{
+        const fb = document.querySelector(`.hw4-fb-${i}`);
+        const selected = document.querySelector(`.hw4-opt[data-idx="${i}"].selected`);
+        if (selected && selected.dataset.value === t.correct) {
+          fb.textContent = '✅'; fb.style.color = 'green';
+        } else {
+          fb.textContent = '❌'; fb.style.color = '#b33';
+        }
+      });
+    };
+    document.querySelectorAll('.hw4-opt').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = this.dataset.idx;
+        document.querySelectorAll(`.hw4-opt[data-idx="${idx}"]`).forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+      });
+    });
+
+    document.getElementById('check-hw5').onclick = () => {
+      let allCorrect = true;
+      document.querySelectorAll('.hw5').forEach(sel => {
+        const idx = sel.dataset.idx;
+        if (sel.value !== textParts[idx].correct) allCorrect = false;
+      });
+      const fb = document.getElementById('hw5-fb');
+      fb.textContent = allCorrect ? '✅ Всё верно!' : '❌ Есть ошибки';
+      fb.style.color = allCorrect ? 'green' : '#b33';
+    };
+  }
+
+  renderAffirmativeBlocks();
+  renderNegativeBlocks();
+  renderQuestionBlocks();
+  renderHomework();
+  showPage('home');
+})();
+</script>
+</body>
+</html>
