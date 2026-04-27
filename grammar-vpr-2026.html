@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Грамматический справочник | Английский 4 класс | ВПР</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Comic Neue', 'Comic Sans MS', 'Nunito', sans-serif;
+            background: #f5f9ff;
+            color: #1e2f3e;
+            padding: 30px 20px;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #1e6f9f, #42a5f5);
+            display: inline-block;
+            padding: 12px 32px;
+            border-radius: 60px;
+            color: white;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        .toc {
+            background: white;
+            border-radius: 40px;
+            padding: 20px 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .toc h2 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #0b5e7e;
+        }
+
+        .toc-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .toc-link {
+            background: #eef2fa;
+            padding: 6px 18px;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #1e4663;
+            font-weight: 500;
+            transition: 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .toc-link:hover {
+            background: #ffd966;
+            transform: translateY(-2px);
+        }
+
+        .rule-card {
+            background: white;
+            border-radius: 42px;
+            margin-bottom: 45px;
+            padding: 28px 32px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+            transition: 0.2s;
+            scroll-margin-top: 20px;
+        }
+
+        .rule-title {
+            font-size: 1.9rem;
+            font-weight: 800;
+            color: #0b5e7e;
+            border-left: 12px solid #ff9800;
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .rule-content {
+            font-size: 1rem;
+        }
+
+        .rule-content p {
+            margin: 14px 0;
+        }
+
+        .rule-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff9ef;
+            border-radius: 24px;
+            overflow: hidden;
+            margin: 18px 0;
+            font-size: 0.95rem;
+        }
+
+        .rule-table th, .rule-table td {
+            border: 1px solid #ffda99;
+            padding: 10px 14px;
+            vertical-align: top;
+            text-align: left;
+        }
+
+        .rule-table th {
+            background: #ffe0a3;
+            color: #5c3a00;
+        }
+
+        .example {
+            background: #e8f0fe;
+            border-radius: 24px;
+            padding: 14px 20px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            border-left: 6px solid #ff9800;
+        }
+
+        .important {
+            background: #fff0db;
+            border-radius: 28px;
+            padding: 12px 20px;
+            margin: 15px 0;
+            border-left: 6px solid #f57c00;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #ffb74d;
+            border-radius: 30px;
+            padding: 4px 14px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #2c3e2f;
+            margin-right: 12px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #6c85a3;
+            border-top: 1px solid #dce5f0;
+        }
+
+        @media (max-width: 700px) {
+            .rule-card {
+                padding: 18px;
+            }
+            .rule-title {
+                font-size: 1.5rem;
+            }
+            .rule-table th, .rule-table td {
+                padding: 6px 8px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📖 Грамматический справочник<br>4 класс | Подготовка к ВПР</h1>
+
+    <!-- Оглавление -->
+    <div class="toc">
+        <h2>📚 Содержание (17 тем)</h2>
+        <div class="toc-grid">
+            <a href="#rule1" class="toc-link">1. Притяжательные местоимения</a>
+            <a href="#rule2" class="toc-link">2. Притяжательный падеж ('s)</a>
+            <a href="#rule3" class="toc-link">3. Предлоги места</a>
+            <a href="#rule4" class="toc-link">4. Present Simple</a>
+            <a href="#rule5" class="toc-link">5. Present Continuous</a>
+            <a href="#rule6" class="toc-link">6. Past Simple</a>
+            <a href="#rule7" class="toc-link">7. Будущее время (to be going to)</a>
+            <a href="#rule8" class="toc-link">8. Степени сравнения</a>
+            <a href="#rule9" class="toc-link">9. There is / There are</a>
+            <a href="#rule10" class="toc-link">10. Вопросительные слова</a>
+            <a href="#rule11" class="toc-link">11. Числительные 1–100</a>
+            <a href="#rule12" class="toc-link">12. Множественное число</a>
+            <a href="#rule13" class="toc-link">13. Предлоги времени</a>
+            <a href="#rule14" class="toc-link">14. Артикли a/an/the</a>
+            <a href="#rule15" class="toc-link">15. Отрицание (not)</a>
+            <a href="#rule16" class="toc-link">16. Союзы (and, but, or, because)</a>
+            <a href="#rule17" class="toc-link">17. Порядок слов</a>
+        </div>
+    </div>
+
+    <!-- 1. Притяжательные местоимения -->
+    <div id="rule1" class="rule-card">
+        <div class="rule-title">1. Притяжательные местоимения (my, your, his, her, its, our, their)</div>
+        <div class="rule-content">
+            <p><strong>Зачем нужны?</strong> Показывают, кому принадлежит предмет. Всегда стоят <strong>перед</strong> существительным.</p>
+            <table class="rule-table">
+                <tr><th>Местоимение</th><th>Перевод</th><th>Пример</th></tr>
+                <tr><td>my</td><td>мой, моя, моё, мои</td><td>This is <strong>my</strong> pen.</td></tr>
+                <tr><td>your</td><td>твой, ваш</td><td>Is that <strong>your</strong> bag?</td></tr>
+                <tr><td>his</td><td>его</td><td><strong>His</strong> name is Tom.</td></tr>
+                <tr><td>her</td><td>её</td><td>I like <strong>her</strong> dress.</td></tr>
+                <tr><td>its</td><td>его/её (для животных/предметов)</td><td>The cat eats <strong>its</strong> food.</td></tr>
+                <tr><td>our</td><td>наш</td><td><strong>Our</strong> school is big.</td></tr>
+                <tr><td>their</td><td>их</td><td><strong>Their</strong> parents are kind.</td></tr>
+            </table>
+            <div class="important">⚠️ Важно: Не путай <strong>its</strong> (его/её) и <strong>it's</strong> (it is = это есть).</div>
+            <div class="example">💡 Совет: Замени слово "мой/твой" на английское – получишь местоимение.</div>
+        </div>
+    </div>
+
+    <!-- 2. Притяжательный падеж существительных -->
+    <div id="rule2" class="rule-card">
+        <div class="rule-title">2. Притяжательный падеж существительных ('s)</div>
+        <div class="rule-content">
+            <p><strong>Зачем нужен?</strong> Показывает, что один предмет принадлежит другому (обычно человеку или животному).</p>
+            <p><strong>Правило:</strong></p>
+            <ul style="margin-left: 25px;">
+                <li>К имени + <strong>'s</strong> → Kate's bag (сумка Кейт), Larry's bike (велосипед Ларри).</li>
+                <li>Если слово уже заканчивается на <strong>-s</strong> (множественное число), добавляем только апостроф <strong>'</strong> → parents' car (машина родителей).</li>
+                <li>У слов-исключений (children, men) добавляем <strong>'s</strong> → children's room (комната детей).</li>
+            </ul>
+            <div class="example">
+                📌 Примеры:<br>
+                William’s present (подарок Уильяма)<br>
+                The girls’ toys (игрушки девочек)<br>
+                My brother’s friend (друг моего брата)
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Предлоги места -->
+    <div id="rule3" class="rule-card">
+        <div class="rule-title">3. Предлоги места (in, on, behind, opposite, next to, between)</div>
+        <div class="rule-content">
+            <p>Отвечают на вопрос <strong>«где?»</strong> и показывают расположение предмета.</p>
+            <table class="rule-table">
+                <tr><th>Предлог</th><th>Значение</th><th>Пример</th></tr>
+                <tr><td>in</td><td>внутри (в)</td><td>in the garden</td></tr>
+                <tr><td>on</td><td>на поверхности</td><td>on the table</td></tr>
+                <tr><td>behind</td><td>позади</td><td>behind the tree</td></tr>
+                <tr><td>opposite</td><td>напротив</td><td>opposite the cinema</td></tr>
+                <tr><td>next to</td><td>рядом с</td><td>next to the supermarket</td></tr>
+                <tr><td>between</td><td>между</td><td>between the bank and the cinema</td></tr>
+            </table>
+            <div class="example">🎯 Запоминалка: in – внутри, on – на, behind – позади, opposite – напротив, next to – рядом, between – между.</div>
+        </div>
+    </div>
+
+    <!-- 4. Present Simple -->
+    <div id="rule4" class="rule-card">
+        <div class="rule-title">4. Настоящее простое время (Present Simple)</div>
+        <div class="rule-content">
+            <p><strong>Когда используем?</strong> Для фактов, привычек, расписаний.</p>
+            <p><strong>Как образуется?</strong><br>
+            I/you/we/they + <strong>глагол</strong> (без изменений) → I play, they go<br>
+            He/she/it + <strong>глагол + s/es</strong> → He plays, she goes, it runs</p>
+            <p><strong>Отрицание:</strong> don't + глагол / doesn't + глагол (без s!) → I don't like lemons. She doesn't like tomatoes.</p>
+            <p><strong>Вопрос:</strong> Do/Does + подлежащее + глагол? → Do you play chess? Does he play chess?</p>
+            <div class="example">📘 Примеры из ВПР: Fedor likes volleyball. They go to the cinema on Sundays. She doesn't like lemons.</div>
+        </div>
+    </div>
+
+    <!-- 5. Present Continuous -->
+    <div id="rule5" class="rule-card">
+        <div class="rule-title">5. Настоящее длительное время (Present Continuous)</div>
+        <div class="rule-content">
+            <p><strong>Когда используем?</strong> Действие происходит <strong>прямо сейчас</strong>, в момент речи. Слова-помощники: now, at the moment, Look! Listen!</p>
+            <p><strong>Как образуется?</strong> am/is/are + глагол + <strong>ing</strong><br>
+            I am reading now. She is sleeping. They are playing football.</p>
+            <p><strong>Отрицание:</strong> am not / isn't / aren't + ing</p>
+            <p><strong>Вопрос:</strong> Am/Is/Are + подлежащее + ing?</p>
+            <div class="example">🎬 Примеры: Look! The baby is crying. We are having dinner at the moment. The boys are riding their bikes now.</div>
+        </div>
+    </div>
+
+    <!-- 6. Past Simple -->
+    <div id="rule6" class="rule-card">
+        <div class="rule-title">6. Прошедшее простое время (Past Simple)</div>
+        <div class="rule-content">
+            <p><strong>Когда используем?</strong> Действие завершилось в прошлом (yesterday, last week, last summer, two days ago).</p>
+            <p><strong>Правильные глаголы:</strong> +ed (play – played, visit – visited)<br>
+            <strong>Неправильные глаголы:</strong> нужно запомнить вторую форму (get – got, give – gave, see – saw, go – went)</p>
+            <p><strong>Отрицание:</strong> didn't + глагол (начальная форма) → He didn't like the soup.<br>
+            <strong>Вопрос:</strong> Did + подлежащее + глагол? → Did you come home?</p>
+            <div class="example">📆 Примеры: Larry got a new bike. We visited the Kazan Kremlin. She saw a film yesterday.</div>
+        </div>
+    </div>
+
+    <!-- 7. Future (to be going to) -->
+    <div id="rule7" class="rule-card">
+        <div class="rule-title">7. Будущее время (to be going to)</div>
+        <div class="rule-content">
+            <p><strong>Когда используем?</strong> Планы и намерения на будущее. Переводится как «собираться».</p>
+            <p><strong>Как образуется?</strong> am/is/are + going to + глагол<br>
+            I am going to study. She is going to buy a bag. They are going to ride bikes.</p>
+            <p><strong>Отрицание:</strong> am not/isn't/aren't going to<br>
+            <strong>Вопрос:</strong> Am/Is/Are + подлежащее + going to?</p>
+            <div class="example">🔮 Пример: Tomorrow Larry and Ned are going to ride their bikes in the park.</div>
+        </div>
+    </div>
+
+    <!-- 8. Степени сравнения -->
+    <div id="rule8" class="rule-card">
+        <div class="rule-title">8. Степени сравнения прилагательных</div>
+        <div class="rule-content">
+            <p><strong>Зачем нужны?</strong> Сравнивать предметы или людей.</p>
+            <p>Три степени: положительная (old, big, good), сравнительная (older, bigger, better), превосходная (the oldest, the biggest, the best).</p>
+            <p><strong>Правила:</strong><br>
+            - Короткие слова (1 слог) → +er / +est (old – older – the oldest)<br>
+            - Слово на y → y меняется на i (happy – happier – the happiest)<br>
+            - Длинные слова (3+ слогов) → more + слово / the most + слово (beautiful – more beautiful – the most beautiful)<br>
+            - Исключения: good – better – the best; bad – worse – the worst</p>
+            <div class="example">🏆 Примеры из ВПР: This zoo is the oldest in Russia. This book is better than that one.</div>
+        </div>
+    </div>
+
+    <!-- 9. There is/are -->
+    <div id="rule9" class="rule-card">
+        <div class="rule-title">9. Оборот There is / There are</div>
+        <div class="rule-content">
+            <p><strong>Зачем нужен?</strong> Говорит, что <strong>где-то что-то есть (находится)</strong>.</p>
+            <p><strong>Правило:</strong><br>
+            There is + существительное в единственном числе → There is a cat in the garden.<br>
+            There are + существительное во множественном числе → There are many animals in the zoo.</p>
+            <p><strong>Отрицание:</strong> There is not (isn't) / There are not (aren't)<br>
+            <strong>Вопрос:</strong> Is there / Are there ...?</p>
+            <div class="example">🏠 Пример: There are thousands of animals there. Is there a supermarket opposite the cinema?</div>
+        </div>
+    </div>
+
+    <!-- 10. Вопросительные слова -->
+    <div id="rule10" class="rule-card">
+        <div class="rule-title">10. Вопросительные слова</div>
+        <div class="rule-content">
+            <p>Помогают задать <strong>конкретный</strong> вопрос (а не просто "да/нет").</p>
+            <table class="rule-table">
+                <tr><th>Слово</th><th>Значение</th><th>Пример</th></tr>
+                <tr><td>Who?</td><td>Кто?</td><td>Who is this message from?</td></tr>
+                <tr><td>Where?</td><td>Где? Куда?</td><td>Where is the pet shop?</td></tr>
+                <tr><td>What colour?</td><td>Какого цвета?</td><td>What colour is the bike?</td></tr>
+                <tr><td>Whose?</td><td>Чей?</td><td>Whose birthday is next Tuesday?</td></tr>
+                <tr><td>When?</td><td>Когда?</td><td>When will Kate come home?</td></tr>
+                <tr><td>How many?</td><td>Сколько?</td><td>How many children are in the family?</td></tr>
+                <tr><td>How old?</td><td>Сколько лет?</td><td>How old is Larry?</td></tr>
+            </table>
+            <div class="important">📌 Запомни: после вопросительного слова обычно идёт вспомогательный глагол (do/does/did/is/are...).</div>
+        </div>
+    </div>
+
+    <!-- 11. Числительные 1-100 -->
+    <div id="rule11" class="rule-card">
+        <div class="rule-title">11. Числительные 1–100 (словами)</div>
+        <div class="rule-content">
+            <p><strong>1–12 – запомнить:</strong> one, two, three, four, five, six, seven, eight, nine, ten, eleven, twelve.</p>
+            <p><strong>13–19 – суффикс -teen:</strong> thirteen, fourteen, fifteen, sixteen, seventeen, eighteen, nineteen.<br>
+            <span class="badge">Внимание</span> three → thirteen, five → fifteen, eight → eighteen.</p>
+            <p><strong>20,30,…90 – десятки на -ty:</strong> twenty, thirty, forty, fifty, sixty, seventy, eighty, ninety.<br>
+            <span class="badge">Изменения</span> two→twenty, three→thirty, four→forty, five→fifty, eight→eighty.</p>
+            <p><strong>21–99 – составные:</strong> десятки + дефис + единицы (twenty-one, thirty-five, ninety-nine).</p>
+            <p><strong>100 – one hundred.</strong></p>
+            <div class="example">🔢 Примеры из ВПР: Fedor is eleven years old. Liza is eight. There are thirty-three apples.</div>
+        </div>
+    </div>
+
+    <!-- 12. Множественное число -->
+    <div id="rule12" class="rule-card">
+        <div class="rule-title">12. Множественное число существительных</div>
+        <div class="rule-content">
+            <ul>
+                <li>Обычно +s (cat → cats, bike → bikes)</li>
+                <li>После -s, -ss, -sh, -ch, -x → +es (bus → buses, box → boxes)</li>
+                <li>После y (согласная+y) → y меняется на ies (family → families)</li>
+                <li><strong>Исключения:</strong> child – children, man – men, woman – women, tooth – teeth, foot – feet, mouse – mice</li>
+            </ul>
+            <div class="example">📚 Примеры из ВПР: The children have got a cat. There are thousands of animals.</div>
+        </div>
+    </div>
+
+    <!-- 13. Предлоги времени -->
+    <div id="rule13" class="rule-card">
+        <div class="rule-title">13. Предлоги времени (in, on, at)</div>
+        <div class="rule-content">
+            <table class="rule-table">
+                <tr><th>Предлог</th><th>Употребление</th><th>Пример</th></tr>
+                <tr><td>in</td><td>месяцы, годы, времена года, части суток (кроме ночи)</td><td>in March, in summer, in the morning</td></tr>
+                <tr><td>on</td><td>дни недели, даты</td><td>on Monday, on June 5th</td></tr>
+                <tr><td>at</td><td>точное время, праздники</td><td>at 5 o'clock, at noon, at night</td></tr>
+            </table>
+            <div class="example">⏰ Примеры: I go to school on Monday. My birthday is in March. The lesson starts at 8:30 am.</div>
+        </div>
+    </div>
+
+    <!-- 14. Артикли -->
+    <div id="rule14" class="rule-card">
+        <div class="rule-title">14. Артикли (a, an, the)</div>
+        <div class="rule-content">
+            <p><strong>a / an</strong> – неопределённые («какой-то, один из многих»). a перед согласным звуком (a cat), an перед гласным (an apple, an elephant).</p>
+            <p><strong>the</strong> – определённый («тот самый, конкретный»). Используем, когда все знают, о чём речь: the sun, the moon, the bike (который Ларри получил).</p>
+            <div class="example">📖 Примеры: I have a bike. This is the bike that Larry got. She is an excellent pupil.</div>
+        </div>
+    </div>
+
+    <!-- 15. Отрицание not -->
+    <div id="rule15" class="rule-card">
+        <div class="rule-title">15. Отрицательная частица not (don't / doesn't / didn't / isn't / aren't)</div>
+        <div class="rule-content">
+            <p>Отрицание строится с помощью вспомогательного глагола + <strong>not</strong>.</p>
+            <ul>
+                <li>Present Simple: do not (don't) / does not (doesn't) + глагол без s</li>
+                <li>Present Continuous: am not / isn't / aren't + ing</li>
+                <li>Past Simple: did not (didn't) + глагол в начальной форме</li>
+                <li>С глаголом to be: is not (isn't), are not (aren't), am not</li>
+            </ul>
+            <div class="example">🚫 Примеры: She doesn't like lemons. They aren't playing now. He didn't come yesterday.</div>
+        </div>
+    </div>
+
+    <!-- 16. Союзы -->
+    <div id="rule16" class="rule-card">
+        <div class="rule-title">16. Союзы (and, but, or, because)</div>
+        <div class="rule-content">
+            <p><strong>and</strong> – и, а (добавляет) → I like apples and bananas.<br>
+            <strong>but</strong> – но (противопоставление) → She likes pears but she doesn't like lemons.<br>
+            <strong>or</strong> – или → Do you want tea or coffee?<br>
+            <strong>because</strong> – потому что → He is happy because he got a new bike.</p>
+            <div class="example">🔗 Примеры: He is wet because it is raining. I like apples and oranges.</div>
+        </div>
+    </div>
+
+    <!-- 17. Порядок слов -->
+    <div id="rule17" class="rule-card">
+        <div class="rule-title">17. Порядок слов в предложении</div>
+        <div class="rule-content">
+            <p><strong>Утверждение:</strong> Подлежащее → сказуемое → дополнение → обстоятельство.<br>
+            <em>Larry rides his bike in the park every day.</em></p>
+            <p><strong>Вопрос (общий, да/нет):</strong> Вспомогательный глагол → подлежащее → смысловой глагол → ...<br>
+            <em>Does Larry ride his bike in the park?</em></p>
+            <p><strong>Вопрос (специальный):</strong> Вопросительное слово → вспомогательный глагол → подлежащее → смысловой глагол → ...<br>
+            <em>Where does Larry ride his bike?</em></p>
+            <p><strong>Отрицание:</strong> Подлежащее → вспомогательный глагол + not → смысловой глагол → ...<br>
+            <em>Larry does not ride his bike in the rain.</em></p>
+            <div class="example">📝 Важно: Не меняй порядок слов, как в русском языке!</div>
+        </div>
+    </div>
+
+    <footer>
+        📚 Справочник поможет подготовиться к ВПР по английскому языку. Все правила – с примерами и таблицами.
+    </footer>
+</div>
+</body>
+</html>
