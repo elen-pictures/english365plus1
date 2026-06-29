@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Еда для детей в Великобритании</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f7f9fc;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            max-width: 820px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 30px 30px 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        h1 {
+            font-size: 28px;
+            color: #1e2b3c;
+            border-bottom: 3px solid #2a7de1;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .lang-toggle {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 25px;
+        }
+        .lang-toggle button {
+            background: #2a7de1;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(42,125,225,0.3);
+        }
+        .lang-toggle button:hover {
+            background: #1a5fb0;
+            transform: scale(1.02);
+        }
+        .lang-toggle button:active {
+            transform: scale(0.97);
+        }
+        .text-block {
+            line-height: 1.7;
+            color: #1e2b3c;
+            font-size: 17px;
+            padding: 6px 0 12px;
+        }
+        .text-block h2 {
+            font-size: 22px;
+            margin: 24px 0 10px;
+            color: #1e3a5f;
+        }
+        .text-block h3 {
+            font-size: 19px;
+            margin: 18px 0 8px;
+            color: #2a4d7a;
+        }
+        .text-block p {
+            margin: 8px 0;
+        }
+        .text-block ul {
+            margin: 8px 0 12px 22px;
+        }
+        .text-block ul li {
+            margin-bottom: 4px;
+        }
+        .text-block .dish {
+            font-weight: 600;
+            color: #1e4c7a;
+        }
+        hr {
+            margin: 32px 0 24px;
+            border: 1px solid #e2e8f0;
+        }
+        .test-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e2b3c;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .test-title span {
+            background: #2a7de1;
+            color: white;
+            font-size: 16px;
+            padding: 2px 14px;
+            border-radius: 30px;
+        }
+        .question-item {
+            background: #f0f4fc;
+            border-radius: 16px;
+            padding: 18px 20px 14px;
+            margin-bottom: 18px;
+            transition: 0.15s;
+        }
+        .question-item.correct {
+            background: #e6f5e9;
+            border-left: 6px solid #28a745;
+        }
+        .question-item.incorrect {
+            background: #fde8e8;
+            border-left: 6px solid #dc3545;
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #0b1d31;
+        }
+        .options label {
+            display: block;
+            padding: 6px 12px;
+            margin: 4px 0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            border: 1px solid #d0dbe8;
+            transition: 0.1s;
+        }
+        .options label:hover {
+            background: #e3edfb;
+            border-color: #8bb3e0;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+            accent-color: #2a7de1;
+            transform: scale(1.1);
+        }
+        .options label.correct-answer {
+            background: #c3e6cb;
+            border-color: #28a745;
+        }
+        .options label.wrong-answer {
+            background: #f5c6cb;
+            border-color: #dc3545;
+        }
+        .options label.show-correct {
+            background: #c3e6cb;
+            border-color: #28a745;
+        }
+        .btn-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin: 28px 0 18px;
+            justify-content: center;
+        }
+        .btn-group button {
+            padding: 12px 32px;
+            border: none;
+            border-radius: 40px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            background: #e2e8f0;
+            color: #1e2b3c;
+        }
+        .btn-group button#checkBtn {
+            background: #2a7de1;
+            color: white;
+            box-shadow: 0 3px 10px rgba(42,125,225,0.3);
+        }
+        .btn-group button#checkBtn:hover {
+            background: #1a5fb0;
+        }
+        .btn-group button#resetBtn {
+            background: #e9ecef;
+            color: #1e2b3c;
+        }
+        .btn-group button#resetBtn:hover {
+            background: #d4d9e0;
+        }
+        #result {
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
+            padding: 16px 10px;
+            border-radius: 16px;
+            background: #f0f4fc;
+            margin-top: 12px;
+            color: #1e2b3c;
+        }
+        #result .score {
+            color: #2a7de1;
+        }
+        .footer-note {
+            margin-top: 28px;
+            font-size: 14px;
+            color: #6c7a8a;
+            text-align: center;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 18px;
+        }
+        @media (max-width: 550px) {
+            .container { padding: 18px; }
+            h1 { font-size: 23px; }
+            .question-text { font-size: 16px; }
+            .btn-group button { padding: 10px 20px; font-size: 15px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <h1>🍽️ Food for Children in the UK</h1>
+
+    <!-- Кнопка переключения языка -->
+    <div class="lang-toggle">
+        <button id="langToggle">🇷🇺 Показать перевод на русский</button>
+    </div>
+
+    <!-- Текст на английском -->
+    <div id="text-en" class="text-block">
+        <h2>Food for children in the UK</h2>
+        <p>In the UK, children have different food.<br>
+        They have school meals.<br>
+        They have family dinners.<br>
+        They have kids' meals at fast food restaurants.</p>
+
+        <h3>School meals</h3>
+        <p>In state schools, children have three meals a day.<br>
+        The menu is good for children.<br>
+        It is healthy.</p>
+        <p>Breakfast can be:</p>
+        <ul>
+            <li>English breakfast: eggs, bacon, sausages, beans.</li>
+            <li>Lighter breakfast: oatmeal, muesli with milk, toast with jam, fruit, tea or coffee.</li>
+        </ul>
+        <p>For lunch, children can choose:</p>
+        <ul>
+            <li>meat,</li>
+            <li>fish,</li>
+            <li>or vegetarian food (tofu, beans, eggs).</li>
+        </ul>
+        <p>There are soups (vegetable soups).<br>
+        Children can make a salad from vegetables.<br>
+        After lunch, they have dessert: fruit salad, yoghurt, or cookies.</p>
+        <p>At boarding schools, children have dinner.<br>
+        Dinner has hot food, vegetables, and fruit.<br>
+        Sometimes they have theme dinners.<br>
+        They cook food from other countries.<br>
+        They set the table with their teachers.</p>
+        <p>Older students make snacks.<br>
+        They have rooms with fridges.<br>
+        They can buy healthy snacks from machines: crispbread, cereal bars.</p>
+
+        <h3>Special food needs</h3>
+        <p>Schools think about children with allergies.<br>
+        They think about religion.<br>
+        They think about ethics.<br>
+        They make a special menu for each child.<br>
+        Food has labels.<br>
+        Labels show if food is vegan or gluten-free.</p>
+
+        <h3>Money for school meals</h3>
+        <p>In England, Scotland, and Wales, children 4–7 get free meals.<br>
+        Other children get discounts.<br>
+        Some families get social benefits.<br>
+        Their children eat for free.<br>
+        Other families pay less.<br>
+        In Northern Ireland, children from poor families eat for free.</p>
+
+        <h3>Family dinners</h3>
+        <p>British food has dishes children like.</p>
+        <ul>
+            <li><span class="dish">Fish and Chips</span> – fish in batter with chips. Children love it.</li>
+            <li><span class="dish">Shepherd's Pie</span> – meat with vegetables and mashed potato on top. It is a big meal.</li>
+            <li><span class="dish">Roast Dinner</span> – roast beef or turkey with roast potatoes, vegetables, and gravy. It is a festive meal.</li>
+        </ul>
+    </div>
+
+    <!-- Текст на русском (скрыт по умолчанию) -->
+    <div id="text-ru" class="text-block" style="display:none;">
+        <h2>Еда для детей в Великобритании</h2>
+        <p>В Великобритании у детей есть разная еда.<br>
+        У них есть школьные обеды.<br>
+        У них есть семейные ужины.<br>
+        У них есть детские наборы в ресторанах быстрого питания.</p>
+
+        <h3>Школьные обеды</h3>
+        <p>В государственных школах дети едят три раза в день.<br>
+        Меню хорошее для детей.<br>
+        Оно полезное.</p>
+        <p>Завтрак может быть:</p>
+        <ul>
+            <li>Английский завтрак: яйца, бекон, сосиски, фасоль.</li>
+            <li>Лёгкий завтрак: овсянка, мюсли с молоком, тост с джемом, фрукты, чай или кофе.</li>
+        </ul>
+        <p>На обед дети могут выбрать:</p>
+        <ul>
+            <li>мясо,</li>
+            <li>рыбу,</li>
+            <li>или вегетарианскую еду (тофу, фасоль, яйца).</li>
+        </ul>
+        <p>Есть супы (овощные супы).<br>
+        Дети могут сделать салат из овощей.<br>
+        После обеда у них десерт: фруктовый салат, йогурт или печенье.</p>
+        <p>В школах-пансионах у детей есть ужин.<br>
+        На ужин есть горячая еда, овощи и фрукты.<br>
+        Иногда у них тематические ужины.<br>
+        Они готовят еду из других стран.<br>
+        Они накрывают на стол вместе с учителями.</p>
+        <p>Старшие ученики делают перекусы.<br>
+        У них есть комнаты с холодильниками.<br>
+        Они могут купить полезные перекусы в автоматах: хлебцы, злаковые батончики.</p>
+
+        <h3>Особые потребности в еде</h3>
+        <p>Школы думают о детях с аллергией.<br>
+        Они думают о религии.<br>
+        Они думают об этике.<br>
+        Они делают специальное меню для каждого ребёнка.<br>
+        На еде есть маркировка.<br>
+        Маркировка показывает, является ли еда веганской или без глютена.</p>
+
+        <h3>Финансирование школьных обедов</h3>
+        <p>В Англии, Шотландии и Уэльсе дети 4–7 лет получают бесплатные обеды.<br>
+        Другие дети получают скидки.<br>
+        Некоторые семьи получают социальные пособия.<br>
+        Их дети едят бесплатно.<br>
+        Другие семьи платят меньше.<br>
+        В Северной Ирландии дети из бедных семей едят бесплатно.</p>
+
+        <h3>Семейные ужины</h3>
+        <p>В британской кухне есть блюда, которые нравятся детям.</p>
+        <ul>
+            <li><span class="dish">Fish and Chips</span> – рыба в кляре с картошкой фри. Дети любят это.</li>
+            <li><span class="dish">Пастуший пирог</span> – мясо с овощами и картофельное пюре сверху. Это сытное блюдо.</li>
+            <li><span class="dish">Ростбиф</span> – жареная говядина или индейка с жареным картофелем, овощами и подливкой. Это праздничное блюдо.</li>
+        </ul>
+    </div>
+
+    <hr>
+
+    <!-- ТЕСТ -->
+    <div class="test-title">
+        📝 Test <span>10 questions</span>
+    </div>
+    <form id="quizForm">
+        <!-- вопросы будут вставлены скриптом -->
+    </form>
+
+    <div class="btn-group">
+        <button id="checkBtn">✅ Проверить ответы</button>
+        <button id="resetBtn">🔄 Сбросить</button>
+    </div>
+
+    <div id="result"></div>
+
+    <div class="footer-note">
+        Нажмите «Проверить ответы», чтобы увидеть результат. Правильные ответы подсветятся зелёным.
+    </div>
+</div>
+
+<script>
+    // Данные теста: 10 вопросов
+    const questions = [
+        {
+            question: "Where do children get three meals a day?",
+            options: ["In state schools", "In parks", "In hospitals"],
+            correct: 0
+        },
+        {
+            question: "What can breakfast include?",
+            options: ["Pizza and chips", "Eggs and bacon", "Sushi and rice"],
+            correct: 1
+        },
+        {
+            question: "What can children choose for lunch?",
+            options: ["Only meat", "Only fish", "Meat, fish, or vegetarian food"],
+            correct: 2
+        },
+        {
+            question: "What do children have after lunch?",
+            options: ["Soup", "Dessert", "Salad"],
+            correct: 1
+        },
+        {
+            question: "Who can make snacks?",
+            options: ["Teachers", "Older students", "Parents"],
+            correct: 1
+        },
+        {
+            question: "What do schools think about?",
+            options: ["Weather and sports", "Allergies and religion", "Movies and games"],
+            correct: 1
+        },
+        {
+            question: "In England, Scotland, and Wales, children aged 4–7 get …",
+            options: ["free meals", "discounts only", "no food"],
+            correct: 0
+        },
+        {
+            question: "In Northern Ireland, who gets free meals?",
+            options: ["All children", "Children from poor families", "Only children aged 4–7"],
+            correct: 1
+        },
+        {
+            question: "What is a popular British dish with fish?",
+            options: ["Shepherd's Pie", "Roast Dinner", "Fish and Chips"],
+            correct: 2
+        },
+        {
+            question: "What is a traditional festive dish?",
+            options: ["Fish and Chips", "Roast Dinner", "Oatmeal"],
+            correct: 1
+        }
+    ];
+
+    // Генерируем форму
+    const form = document.getElementById('quizForm');
+    questions.forEach((q, index) => {
+        const div = document.createElement('div');
+        div.className = 'question-item';
+        div.dataset.qindex = index;
+
+        const qText = document.createElement('div');
+        qText.className = 'question-text';
+        qText.textContent = `${index+1}. ${q.question}`;
+        div.appendChild(qText);
+
+        const optsDiv = document.createElement('div');
+        optsDiv.className = 'options';
+        q.options.forEach((opt, optIndex) => {
+            const label = document.createElement('label');
+            const radio = document.createElement('input');
+            radio.type = 'radio';
+            radio.name = `q${index}`;
+            radio.value = optIndex;
+            label.appendChild(radio);
+            label.appendChild(document.createTextNode(opt));
+            optsDiv.appendChild(label);
+        });
+        div.appendChild(optsDiv);
+        form.appendChild(div);
+    });
+
+    // Переключение языка
+    const langBtn = document.getElementById('langToggle');
+    const textEn = document.getElementById('text-en');
+    const textRu = document.getElementById('text-ru');
+    let langShown = 'en'; // 'en' или 'ru'
+
+    langBtn.addEventListener('click', function() {
+        if (langShown === 'en') {
+            textEn.style.display = 'none';
+            textRu.style.display = 'block';
+            langBtn.textContent = '🇬🇧 Показать на английском';
+            langShown = 'ru';
+        } else {
+            textEn.style.display = 'block';
+            textRu.style.display = 'none';
+            langBtn.textContent = '🇷🇺 Показать перевод на русский';
+            langShown = 'en';
+        }
+    });
+
+    // Проверка теста
+    const checkBtn = document.getElementById('checkBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const resultDiv = document.getElementById('result');
+
+    function checkTest() {
+        // Убираем предыдущие стили
+        document.querySelectorAll('.question-item').forEach(item => {
+            item.classList.remove('correct', 'incorrect');
+        });
+        document.querySelectorAll('.options label').forEach(label => {
+            label.classList.remove('correct-answer', 'wrong-answer', 'show-correct');
+        });
+
+        let correctCount = 0;
+        const total = questions.length;
+
+        questions.forEach((q, index) => {
+            const selected = document.querySelector(`input[name="q${index}"]:checked`);
+            const questionDiv = document.querySelector(`.question-item[data-qindex="${index}"]`);
+            const labels = questionDiv.querySelectorAll('.options label');
+
+            // Если выбран ответ
+            if (selected) {
+                const userAnswer = parseInt(selected.value);
+                const isCorrect = (userAnswer === q.correct);
+                if (isCorrect) {
+                    correctCount++;
+                    questionDiv.classList.add('correct');
+                    // подсветим правильный вариант
+                    labels[q.correct].classList.add('correct-answer');
+                } else {
+                    questionDiv.classList.add('incorrect');
+                    labels[userAnswer].classList.add('wrong-answer');
+                    labels[q.correct].classList.add('show-correct'); // покажем правильный
+                }
+            } else {
+                // Если ничего не выбрано - подсветим правильный ответ
+                questionDiv.classList.add('incorrect');
+                labels[q.correct].classList.add('show-correct');
+            }
+        });
+
+        resultDiv.innerHTML = `✅ Вы ответили правильно на <span class="score">${correctCount}</span> из ${total}.`;
+        if (correctCount === total) {
+            resultDiv.innerHTML += ' 🎉 Отлично!';
+        } else if (correctCount >= 7) {
+            resultDiv.innerHTML += ' 👍 Хорошо!';
+        } else {
+            resultDiv.innerHTML += ' 📖 Попробуйте ещё раз.';
+        }
+    }
+
+    function resetTest() {
+        // Сбросить все radio
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.checked = false;
+        });
+        // Убрать стили
+        document.querySelectorAll('.question-item').forEach(item => {
+            item.classList.remove('correct', 'incorrect');
+        });
+        document.querySelectorAll('.options label').forEach(label => {
+            label.classList.remove('correct-answer', 'wrong-answer', 'show-correct');
+        });
+        resultDiv.innerHTML = '';
+    }
+
+    checkBtn.addEventListener('click', checkTest);
+    resetBtn.addEventListener('click', resetTest);
+
+    // Автоматическая проверка при нажатии Enter? Не будем, чтобы не мешать.
+
+    // Дополнительно: если пользователь меняет ответ после проверки, можно сбросить подсветку этого вопроса? 
+    // Но для простоты оставим как есть.
+</script>
+
+</body>
+</html>
