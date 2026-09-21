@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Money — English Game</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FFF6E4;
+    --panel: #FFFFFF;
+    --ink: #241C15;
+    --ink-soft: #6b6156;
+    --teal: #0E7C6B;
+    --teal-dark: #0a5c4f;
+    --coral: #FF5D73;
+    --coral-dark: #d63f54;
+    --gold: #FFB100;
+    --violet: #6C5CE7;
+    --violet-dark: #5241c4;
+    --line: #241C15;
+    --good: #1f9d55;
+    --bad: #e14b4b;
+    --shadow-off: 4px;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --cream: #191410;
+      --panel: #241C16;
+      --ink: #F7EFE3;
+      --ink-soft: #cabfae;
+      --line: #F7EFE3;
+    }
+  }
+  :root[data-theme="dark"] {
+    --cream: #191410;
+    --panel: #241C16;
+    --ink: #F7EFE3;
+    --ink-soft: #cabfae;
+    --line: #F7EFE3;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+  html {
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+  }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Nunito', sans-serif;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    min-height: 100%;
+    background-image:
+      radial-gradient(circle at 6% 12%, rgba(255,177,0,0.16) 0, transparent 40%),
+      radial-gradient(circle at 94% 85%, rgba(108,92,231,0.14) 0, transparent 42%);
+  }
+  h1, h2, h3, .display {
+    font-family: 'Baloo 2', sans-serif;
+    line-height: 1.12;
+    margin: 0;
+  }
+  p { margin: 0; }
+  button { font-family: inherit; }
+
+  .app {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 18px 18px 110px;
+  }
+
+  /* ---- top bar ---- */
+  .topbar {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    background: var(--cream);
+    padding: 10px 0 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Baloo 2', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    white-space: nowrap;
+  }
+  .brand .coin {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--gold);
+    border: 2.5px solid var(--line);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: var(--ink);
+  }
+  .progress-track {
+    flex: 1;
+    height: 10px;
+    background: var(--panel);
+    border: 2.5px solid var(--line);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--gold));
+    width: 0%;
+    transition: width .4s ease;
+  }
+  .step-count {
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  /* ---- screens ---- */
+  .screen { display: none; animation: fadein .35s ease; }
+  .screen.active { display: block; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(6px);} to {opacity:1; transform:none;} }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--coral);
+    color: #fff;
+    font-weight: 800;
+    font-size: 13px;
+    padding: 6px 14px 6px 12px;
+    border: 2.5px solid var(--line);
+    position: relative;
+    margin-bottom: 14px;
+  }
+  .tag::after {
+    content: "";
+    position: absolute;
+    right: -11px; top: 50%;
+    transform: translateY(-50%);
+    width: 0; height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-left: 11px solid var(--coral);
+    filter: drop-shadow(1.5px 0 0 var(--line));
+  }
+  .tag.gold { background: var(--gold); color: var(--ink); }
+  .tag.gold::after { border-left-color: var(--gold); }
+  .tag.violet { background: var(--violet); }
+  .tag.violet::after { border-left-color: var(--violet); }
+  .tag.teal { background: var(--teal); }
+  .tag.teal::after { border-left-color: var(--teal); }
+
+  .panel {
+    background: var(--panel);
+    border: 3px solid var(--line);
+    border-radius: 22px;
+    padding: 26px 22px;
+    box-shadow: var(--shadow-off) var(--shadow-off) 0 var(--line);
+  }
+
+  h1.display { font-size: clamp(30px, 7vw, 44px); }
+  h2.display { font-size: clamp(22px, 5vw, 28px); margin-bottom: 4px;}
+  .subtitle { color: var(--ink-soft); font-weight: 700; margin-top: 6px; }
+  .lead { font-size: 17px; line-height: 1.6; }
+
+  .hero-row { display:flex; align-items:center; gap: 18px; flex-wrap: wrap; }
+  .hero-coins { font-size: 46px; line-height: 1; }
+
+  /* buttons */
+  .btn {
+    font-weight: 800;
+    border: 2.5px solid var(--line);
+    border-radius: 14px;
+    padding: 12px 20px;
+    cursor: pointer;
+    background: var(--panel);
+    color: var(--ink);
+    box-shadow: 3px 3px 0 var(--line);
+    transition: transform .12s ease, box-shadow .12s ease;
+    font-size: 15px;
+  }
+  .btn:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--line); }
+  .btn.primary { background: var(--teal); color: #fff; }
+  .btn.coral { background: var(--coral); color: #fff; }
+  .btn.gold { background: var(--gold); color: var(--ink); }
+  .btn.violet { background: var(--violet); color: #fff; }
+  .btn:disabled { opacity: .4; cursor: not-allowed; box-shadow: none; transform:none; }
+  .btn.small { padding: 8px 14px; font-size: 13px; border-radius: 10px; }
+  .btn.wide { width: 100%; }
+
+  .nav-row {
+    position: fixed;
+    left: 0; right: 0; bottom: 0;
+    padding: 12px 18px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(180deg, rgba(255,246,228,0) 0%, var(--cream) 30%);
+    display: flex; justify-content: space-between; gap: 10px;
+    max-width: 760px; margin: 0 auto;
+    z-index: 15;
+  }
+  :root[data-theme="dark"] .nav-row,
+  @media (prefers-color-scheme: dark) { .nav-row { background: linear-gradient(180deg, rgba(25,20,16,0) 0%, var(--cream) 30%);} }
+
+  /* reading */
+  .read-text p { margin-bottom: 12px; }
+  .word { color: var(--teal-dark); font-weight: 800; }
+  :root[data-theme="dark"] .word { color: #6fe0c8; }
+
+  .fact-box {
+    margin-top: 16px;
+    background: rgba(255,177,0,0.16);
+    border: 2.5px dashed var(--line);
+    border-radius: 16px;
+    padding: 14px 16px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  /* generic instruction line */
+  .instr {
+    font-weight: 700;
+    color: var(--ink-soft);
+    margin-bottom: 16px;
+  }
+  .score-pill {
+    display: inline-block;
+    background: var(--panel);
+    border: 2px solid var(--line);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-weight: 800;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  /* ex1 matching */
+  .match-grid { display:flex; gap: 14px; }
+  .match-col { flex:1; display:flex; flex-direction:column; gap:10px; }
+  .match-item {
+    border: 2.5px solid var(--line);
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align:center;
+    font-weight: 800;
+    font-size: 18px;
+    cursor: pointer;
+    background: var(--panel);
+    transition: all .15s ease;
+  }
+  .match-item.selected { background: var(--gold); }
+  .match-item.matched { background: var(--good); color:#fff; opacity:.75; cursor:default; }
+  .match-item.wrong { animation: shake .3s; background: var(--bad); color:#fff; }
+  @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-6px);} 75%{transform:translateX(6px);} }
+
+  /* mcq */
+  .options { display:flex; flex-direction:column; gap:10px; margin-top: 14px;}
+  .option-btn {
+    text-align:left;
+    border: 2.5px solid var(--line);
+    border-radius: 14px;
+    padding: 13px 16px;
+    font-weight: 700;
+    font-size: 15px;
+    background: var(--panel);
+    cursor:pointer;
+  }
+  .option-btn:hover { background: rgba(108,92,231,0.08); }
+  .option-btn.correct { background: var(--good); color:#fff; }
+  .option-btn.incorrect { background: var(--bad); color:#fff; }
+  .option-btn:disabled { cursor:default; }
+  .explain { margin-top: 12px; font-weight: 700; display:none; }
+
+  /* fill blanks */
+  .blank-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; font-weight:700; font-size:16px; margin-bottom:14px;}
+  .blank-input {
+    width: 74px; text-align:center; font-weight:800; font-size:16px;
+    border: 2.5px solid var(--line); border-radius: 10px; padding: 8px 4px;
+    font-family:inherit; background: var(--panel); color: var(--ink);
+  }
+  .blank-input.correct { border-color: var(--good); background: rgba(31,157,85,0.12); }
+  .blank-input.incorrect { border-color: var(--bad); background: rgba(225,75,75,0.12); }
+
+  /* true false */
+  .tf-list { display:flex; flex-direction:column; gap:12px; }
+  .tf-card {
+    border: 2.5px solid var(--line); border-radius: 14px; padding: 14px;
+    display:flex; align-items:center; justify-content:space-between; gap: 10px; flex-wrap:wrap;
+  }
+  .tf-stmt { font-weight:700; font-size:15px; flex:1; min-width:180px;}
+  .tf-btns { display:flex; gap:8px; }
+  .tf-btn { border:2px solid var(--line); border-radius:10px; padding:7px 14px; font-weight:800; cursor:pointer; background:var(--panel); font-size:13px;}
+  .tf-btn.true-btn.picked-correct { background: var(--good); color:#fff; }
+  .tf-btn.false-btn.picked-correct { background: var(--good); color:#fff; }
+  .tf-btn.picked-wrong { background: var(--bad); color:#fff; }
+  .tf-btn:disabled { cursor:default; }
+
+  /* sorting coins/notes */
+  .sort-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(140px,1fr)); gap: 14px; }
+  .sort-card { border:2.5px solid var(--line); border-radius:14px; padding:12px; text-align:center; }
+  .sort-visual { font-size: 30px; margin-bottom: 6px; }
+  .sort-label { font-weight:800; font-size:14px; margin-bottom:8px; }
+  .sort-btns { display:flex; gap:6px; justify-content:center; }
+  .sort-btn { flex:1; border:2px solid var(--line); border-radius:9px; padding:7px 4px; font-weight:800; font-size:12px; cursor:pointer; background:var(--panel);}
+  .sort-btn.correct { background: var(--good); color:#fff; }
+  .sort-btn.incorrect { background: var(--bad); color:#fff; }
+  .sort-btn:disabled { cursor:default; }
+
+  /* order prices */
+  .chip-pool { display:flex; gap:10px; flex-wrap:wrap; margin-bottom: 18px; }
+  .price-chip {
+    border: 2.5px solid var(--line); border-radius: 999px; padding: 10px 18px;
+    font-weight: 800; font-size:16px; cursor:pointer; background: var(--panel);
+  }
+  .price-chip:disabled { opacity:.35; cursor:default; }
+  .price-chip.shake { animation: shake .3s; background: var(--bad); color:#fff; }
+  .sequence-strip {
+    min-height: 54px; border: 2.5px dashed var(--line); border-radius:14px;
+    display:flex; align-items:center; gap:8px; padding: 8px 10px; flex-wrap:wrap;
+  }
+  .seq-item { background: var(--gold); border:2px solid var(--line); border-radius:999px; padding:8px 14px; font-weight:800; }
+  .arrow-sep { font-weight:800; color: var(--ink-soft); }
+
+  /* scramble */
+  .scramble-word-box { text-align:center; }
+  .answer-slot {
+    min-height: 56px; display:flex; justify-content:center; gap:6px; flex-wrap:wrap;
+    border: 2.5px dashed var(--line); border-radius: 14px; padding: 10px; margin-bottom: 16px;
+  }
+  .letter-tile {
+    width: 42px; height: 42px; border:2.5px solid var(--line); border-radius:10px;
+    font-weight:800; font-size:18px; background: var(--panel); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .letter-tile.placed { background: var(--gold); }
+  .letter-pool { display:flex; justify-content:center; gap:8px; flex-wrap:wrap; }
+  .scramble-progress { text-align:center; font-weight:800; color:var(--ink-soft); margin-top: 14px; }
+
+  /* dialogue */
+  .dialogue-list { display:flex; flex-direction:column; gap:12px; }
+  .dialogue-line { display:flex; gap:10px; align-items:flex-start; }
+  .dialogue-line.right { flex-direction: row-reverse; text-align:right; }
+  .speaker-avatar {
+    width: 38px; height:38px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center; font-size:20px;
+    border: 2.5px solid var(--line); background: var(--gold);
+  }
+  .dialogue-line.right .speaker-avatar { background: var(--violet); }
+  .dialogue-bubble {
+    background: var(--panel); border: 2.5px solid var(--line); border-radius: 16px;
+    padding: 10px 14px; font-weight: 700; font-size: 15px; max-width: 82%;
+  }
+  .speaker-name { font-family:'Baloo 2',sans-serif; font-weight:700; font-size:12px; color: var(--ink-soft); margin-bottom:2px; }
+
+  .dq-block { margin-bottom: 22px; }
+  .dq-question { font-weight:800; font-size:15px; margin-bottom: 8px; }
+
+  /* sentence builder */
+  .word-tile {
+    height: 42px; padding: 0 14px; border:2.5px solid var(--line); border-radius:10px;
+    font-weight:800; font-size:15px; background: var(--panel); cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .word-tile.placed { background: var(--gold); }
+
+  /* shopping budget */
+  .budget-banner {
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background: var(--violet); color:#fff; border:2.5px solid var(--line); border-radius:14px;
+    padding: 12px 16px; font-weight:800; margin-bottom:16px; flex-wrap:wrap;
+  }
+  .shop-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 12px; }
+  .shop-card {
+    border:2.5px solid var(--line); border-radius:14px; padding:12px 8px; text-align:center; cursor:pointer;
+    background: var(--panel);
+  }
+  .shop-card.selected { background: rgba(14,124,107,0.16); border-color: var(--teal); }
+  .shop-emoji { font-size: 30px; }
+  .shop-price { font-weight: 800; margin-top: 4px; }
+  .budget-feedback { margin-top: 16px; font-weight: 800; min-height: 24px; }
+
+  /* memory match */
+  .memory-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .mem-card {
+    aspect-ratio: 1; border: 2.5px solid var(--line); border-radius: 12px;
+    background: var(--violet); display:flex; align-items:center; justify-content:center;
+    font-size: 22px; font-weight:800; color:#fff; cursor:pointer; user-select:none;
+  }
+  .mem-card.flipped { background: var(--panel); color: var(--ink); }
+  .mem-card.matched { background: var(--good); color:#fff; cursor:default; opacity: .85; }
+  .mem-info { text-align:center; font-weight:800; margin-top: 14px; color: var(--ink-soft); }
+
+  /* tic tac toe trivia */
+  .ttt-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .ttt-cell {
+    aspect-ratio: 1; border:2.5px solid var(--line); border-radius: 14px; background: var(--panel);
+    display:flex; align-items:center; justify-content:center; text-align:center; padding: 6px;
+    font-weight: 800; font-size: 13px; cursor:pointer;
+  }
+  .ttt-cell.correct { background: var(--good); color:#fff; font-size: 28px; }
+  .ttt-cell.incorrect { background: var(--bad); color:#fff; font-size: 22px; }
+  .ttt-cell:disabled, .ttt-cell.answered { cursor:default; }
+  .ttt-popup {
+    position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 40;
+    display:flex; align-items:center; justify-content:center; padding: 20px;
+  }
+  .ttt-popup.hidden { display:none; }
+  .ttt-popup-inner {
+    background: var(--panel); border:3px solid var(--line); border-radius: 18px; padding: 20px;
+    max-width: 380px; width:100%; box-shadow: 5px 5px 0 var(--line);
+  }
+
+  /* quiz */
+  .quiz-progress { font-weight:800; color: var(--ink-soft); margin-bottom: 10px; }
+  .quiz-score-badge {
+    display:inline-flex; align-items:center; gap:8px; background: var(--gold); border:2.5px solid var(--line);
+    border-radius: 999px; padding: 8px 16px; font-weight:800; margin-top: 10px;
+  }
+
+  /* results */
+  .results-emoji { font-size: 64px; text-align:center; }
+  .results-score { font-family:'Baloo 2',sans-serif; font-size: 42px; text-align:center; margin: 6px 0 4px; }
+  .results-msg { text-align:center; font-weight:800; color: var(--ink-soft); margin-bottom: 18px; }
+  .confetti-row { display:flex; justify-content:center; gap:10px; font-size: 26px; margin-bottom: 10px; }
+
+  @media (max-width:480px){
+    .match-grid { gap: 8px; }
+    .memory-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="topbar">
+    <div class="brand"><span class="coin">₽</span>Money Game</div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="step-count" id="stepCount">1/17</div>
+  </div>
+
+  <!-- 0: INTRO -->
+  <section class="screen active" data-screen="0">
+    <div class="panel">
+      <span class="tag gold">English · Lesson</span>
+      <div class="hero-row">
+        <div class="hero-coins">💵💶💷🪙</div>
+        <div>
+          <h1 class="display">MONEY</h1>
+          <p class="subtitle">Learn currencies and prices — then play!</p>
+        </div>
+      </div>
+      <p class="lead" style="margin-top:16px;">
+        Ты узнаешь, как называются деньги в разных странах, прочитаешь короткий текст,
+        а потом сыграешь в 10 весёлых заданий и финальную викторину. Готов(а)?
+      </p>
+    </div>
+  </section>
+
+  <!-- 1: READING -->
+  <section class="screen" data-screen="1">
+    <div class="panel">
+      <span class="tag">Reading</span>
+      <h2 class="display">Money Around the World</h2>
+      <div class="read-text lead" style="margin-top:14px;">
+        <p>Look in your pocket. What is inside? Coins? Notes? This is <span class="word">money</span>, and every country calls its money by a different name. We call the name of a country's money its <span class="word">currency</span>.</p>
+        <p>In the <span class="word">USA</span>, people use <span class="word">dollars</span> ($). One dollar is 100 cents.<br>
+        In the <span class="word">United Kingdom</span>, people use <span class="word">pounds</span> (£). A small coin there is called a penny.<br>
+        In the <span class="word">European Union</span>, many countries share one currency — the <span class="word">euro</span> (€).<br>
+        In <span class="word">Russia</span>, people use <span class="word">rubles</span> (₽).</p>
+        <p>Money comes in two forms: <span class="word">coins</span> for small amounts, and <span class="word">notes</span> (paper money) for bigger amounts.</p>
+        <p>When you go shopping, you can ask: <em>"How much does it cost?"</em> The answer might be <em>"It costs 5 dollars"</em> or <em>"It costs 2 pounds."</em></p>
+        <div class="fact-box">
+          ⚠️ Be careful! 105 euros is NOT the same as 105 rubles. Always check the currency symbol before you shop — or you might be in for a surprise, just like Peter the raccoon was!
+        </div>
+        <p style="margin-top:14px;">Now let's play and test what you remember about money! 🎮</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2: DIALOGUE -->
+  <section class="screen" data-screen="2">
+    <div class="panel">
+      <span class="tag violet">Dialogue</span>
+      <h2 class="display">Peter goes shopping online</h2>
+      <p class="instr">Прочитай диалог. Дальше будут вопросы по тексту.</p>
+      <div class="dialogue-list">
+        <div class="dialogue-line">
+          <div class="speaker-avatar">🦝</div>
+          <div><div class="speaker-name">Eva</div><div class="dialogue-bubble">Peter, what are you doing?</div></div>
+        </div>
+        <div class="dialogue-line right">
+          <div class="speaker-avatar">🐺</div>
+          <div><div class="speaker-name">Peter</div><div class="dialogue-bubble">I'm shopping online! I've got 2000 rubles.</div></div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker-avatar">🦝</div>
+          <div><div class="speaker-name">Eva</div><div class="dialogue-bubble">What do you want to buy?</div></div>
+        </div>
+        <div class="dialogue-line right">
+          <div class="speaker-avatar">🐺</div>
+          <div><div class="speaker-name">Peter</div><div class="dialogue-bubble">A T-shirt for 25, jeans for 50, and a sweater for 30.</div></div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker-avatar">🦝</div>
+          <div><div class="speaker-name">Eva</div><div class="dialogue-bubble">Peter, look again — is that dollars, pounds, or euros?</div></div>
+        </div>
+        <div class="dialogue-line right">
+          <div class="speaker-avatar">🐺</div>
+          <div><div class="speaker-name">Peter</div><div class="dialogue-bubble">Oh... euros! Is that a lot?</div></div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker-avatar">🦝</div>
+          <div><div class="speaker-name">Eva</div><div class="dialogue-bubble">Yes! 105 euros is much more than 105 rubles.</div></div>
+        </div>
+        <div class="dialogue-line right">
+          <div class="speaker-avatar">🐺</div>
+          <div><div class="speaker-name">Peter</div><div class="dialogue-bubble">Oh no! I only have rubles. I need cheaper things.</div></div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker-avatar">🦝</div>
+          <div><div class="speaker-name">Eva</div><div class="dialogue-bubble">Don't worry — let's find a T-shirt for 10 euros instead.</div></div>
+        </div>
+        <div class="dialogue-line right">
+          <div class="speaker-avatar">🐺</div>
+          <div><div class="speaker-name">Peter</div><div class="dialogue-bubble">Great idea! How much does the T-shirt cost now?</div></div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker-avatar">🦝</div>
+          <div><div class="speaker-name">Eva</div><div class="dialogue-bubble">It costs 10 euros. That's much better!</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3: DIALOGUE CHECK -->
+  <section class="screen" data-screen="3">
+    <div class="panel">
+      <span class="tag violet">Dialogue Check</span>
+      <h2 class="display">Did you understand?</h2>
+      <p class="instr">Ответь на вопросы по диалогу.</p>
+      <div id="dialogueQuizArea"></div>
+      <p class="score-pill" id="dialogueScore" style="margin-top:6px;">Score: 0 / 4</p>
+    </div>
+  </section>
+
+  <!-- 4: SENTENCE BUILDER -->
+  <section class="screen" data-screen="4">
+    <div class="panel">
+      <span class="tag gold">Sentence Builder</span>
+      <h2 class="display">Put the words in order</h2>
+      <p class="instr">Нажимай слова по порядку, чтобы собрать предложение.</p>
+      <div class="scramble-word-box">
+        <div class="answer-slot" id="sentenceAnswer"></div>
+        <div class="letter-pool" id="sentencePool"></div>
+      </div>
+      <div style="display:flex; gap:10px; justify-content:center; margin-top:16px;">
+        <button class="btn small" id="sentenceReset">🔄 Reset</button>
+        <button class="btn small primary" id="sentenceCheck">✓ Check</button>
+      </div>
+      <p class="scramble-progress" id="sentenceProgress">Sentence 1 of 4</p>
+    </div>
+  </section>
+
+  <!-- 5: EX1 MATCHING -->
+  <section class="screen" data-screen="5">
+    <div class="panel">
+      <span class="tag coral">Задание 1 · Match</span>
+      <h2 class="display">Match the money to the country</h2>
+      <p class="instr">Нажми на символ, затем на подходящую страну.</p>
+      <div class="match-grid">
+        <div class="match-col" id="matchLeft"></div>
+        <div class="match-col" id="matchRight"></div>
+      </div>
+      <p class="score-pill" id="matchScore" style="margin-top:14px;">Matched: 0 / 4</p>
+    </div>
+  </section>
+
+  <!-- 3: EX2 MCQ -->
+  <section class="screen" data-screen="6">
+    <div class="panel">
+      <span class="tag violet">Задание 2 · Quick Choice</span>
+      <h2 class="display">What is currency?</h2>
+      <p class="instr">Choose the correct answer.</p>
+      <div class="options" id="ex2Options"></div>
+      <p class="explain" id="ex2Explain"></p>
+    </div>
+  </section>
+
+  <!-- 4: EX3 FILL BLANKS -->
+  <section class="screen" data-screen="7">
+    <div class="panel">
+      <span class="tag gold">Задание 3 · Fill in</span>
+      <h2 class="display">Complete the money facts</h2>
+      <p class="instr">Впиши число в каждое поле, затем нажми «Check».</p>
+      <div id="blanksArea"></div>
+      <button class="btn primary" id="checkBlanksBtn">Check answers</button>
+      <p class="explain" id="blanksFeedback" style="margin-top:10px;"></p>
+    </div>
+  </section>
+
+  <!-- 5: EX4 TRUE/FALSE -->
+  <section class="screen" data-screen="8">
+    <div class="panel">
+      <span class="tag coral">Задание 4 · True or False</span>
+      <h2 class="display">True or false?</h2>
+      <p class="instr">Нажми True или False для каждого утверждения.</p>
+      <div class="tf-list" id="tfList"></div>
+      <p class="score-pill" id="tfScore" style="margin-top:14px;">Score: 0 / 5</p>
+    </div>
+  </section>
+
+  <!-- 6: EX5 SORTING -->
+  <section class="screen" data-screen="9">
+    <div class="panel">
+      <span class="tag teal">Задание 5 · Sort</span>
+      <h2 class="display">Coin or note?</h2>
+      <p class="instr">Реши, монета это или купюра.</p>
+      <div class="sort-grid" id="sortGrid"></div>
+      <p class="score-pill" id="sortScore" style="margin-top:14px;">Score: 0 / 6</p>
+    </div>
+  </section>
+
+  <!-- 7: EX6 ORDER PRICES -->
+  <section class="screen" data-screen="10">
+    <div class="panel">
+      <span class="tag gold">Задание 6 · Order</span>
+      <h2 class="display">Cheapest to most expensive</h2>
+      <p class="instr">Нажимай цены по порядку — от самой дешёвой до самой дорогой.</p>
+      <div class="chip-pool" id="pricePool"></div>
+      <div class="sequence-strip" id="priceSequence"><span style="color:var(--ink-soft); font-weight:700;">Your order will appear here →</span></div>
+    </div>
+  </section>
+
+  <!-- 8: EX7 SCRAMBLE -->
+  <section class="screen" data-screen="11">
+    <div class="panel">
+      <span class="tag violet">Задание 7 · Word Scramble</span>
+      <h2 class="display">Unscramble the currency word</h2>
+      <p class="instr">Нажимай буквы по порядку, чтобы собрать слово.</p>
+      <div class="scramble-word-box">
+        <div class="answer-slot" id="scrambleAnswer"></div>
+        <div class="letter-pool" id="scramblePool"></div>
+      </div>
+      <div style="display:flex; gap:10px; justify-content:center; margin-top:16px;">
+        <button class="btn small" id="scrambleReset">🔄 Reset word</button>
+        <button class="btn small primary" id="scrambleCheck">✓ Check</button>
+      </div>
+      <p class="scramble-progress" id="scrambleProgress">Word 1 of 4</p>
+    </div>
+  </section>
+
+  <!-- 9: EX8 SHOPPING BUDGET -->
+  <section class="screen" data-screen="12">
+    <div class="panel">
+      <span class="tag coral">Задание 8 · Shopping</span>
+      <h2 class="display">Help Max shop!</h2>
+      <p class="instr">Max has $51. Выбери игрушки так, чтобы уложиться в бюджет.</p>
+      <div class="budget-banner"><span>🐺 Max's budget</span><span id="budgetTotal">$0 / $51</span></div>
+      <div class="shop-grid" id="shopGrid"></div>
+      <button class="btn primary wide" id="checkShopBtn" style="margin-top:16px;">Check my cart</button>
+      <p class="budget-feedback" id="shopFeedback"></p>
+    </div>
+  </section>
+
+  <!-- 10: EX9 MEMORY -->
+  <section class="screen" data-screen="13">
+    <div class="panel">
+      <span class="tag gold">Задание 9 · Memory</span>
+      <h2 class="display">Memory match</h2>
+      <p class="instr">Найди пары: символ валюты + её название.</p>
+      <div class="memory-grid" id="memoryGrid"></div>
+      <p class="mem-info" id="memInfo">Moves: 0 · Pairs found: 0 / 4</p>
+    </div>
+  </section>
+
+  <!-- 11: EX10 TIC TAC TOE -->
+  <section class="screen" data-screen="14">
+    <div class="panel">
+      <span class="tag teal">Задание 10 · Trivia Grid</span>
+      <h2 class="display">Claim the grid!</h2>
+      <p class="instr">Нажми на клетку, ответь правильно и получи ✅. Попробуй собрать линию из трёх!</p>
+      <div class="ttt-grid" id="tttGrid"></div>
+      <p class="score-pill" id="tttScore" style="margin-top:14px;">Correct: 0 / 9</p>
+    </div>
+  </section>
+
+  <!-- 12: QUIZ -->
+  <section class="screen" data-screen="15">
+    <div class="panel">
+      <span class="tag coral">Final Quiz</span>
+      <h2 class="display" id="quizTitle">Let's check what you learned!</h2>
+      <p class="quiz-progress" id="quizProgress"></p>
+      <div id="quizArea"></div>
+    </div>
+  </section>
+
+  <!-- 13: RESULTS -->
+  <section class="screen" data-screen="16">
+    <div class="panel">
+      <div class="confetti-row">🎉 💰 🎊 💵 🎉</div>
+      <div class="results-emoji" id="resultsEmoji">🏆</div>
+      <div class="results-score" id="resultsScore">0 / 5</div>
+      <p class="results-msg" id="resultsMsg"></p>
+      <button class="btn primary wide" id="restartBtn">🔁 Play again</button>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-row">
+  <button class="btn" id="backBtn">← Back</button>
+  <button class="btn coral" id="nextBtn">Next →</button>
+</div>
+
+<!-- ttt popup -->
+<div class="ttt-popup hidden" id="tttPopup">
+  <div class="ttt-popup-inner">
+    <h3 class="display" id="tttQ" style="margin-bottom:14px;"></h3>
+    <div class="options" id="tttOptions"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var TOTAL_SCREENS = 17;
+  var current = 0;
+
+  var screens = document.querySelectorAll('.screen');
+  var progressFill = document.getElementById('progressFill');
+  var stepCount = document.getElementById('stepCount');
+  var backBtn = document.getElementById('backBtn');
+  var nextBtn = document.getElementById('nextBtn');
+
+  function showScreen(i){
+    current = Math.max(0, Math.min(TOTAL_SCREENS-1, i));
+    screens.forEach(function(s){
+      s.classList.toggle('active', parseInt(s.dataset.screen,10) === current);
+    });
+    progressFill.style.width = (current/(TOTAL_SCREENS-1)*100) + '%';
+    stepCount.textContent = (current+1) + '/' + TOTAL_SCREENS;
+    backBtn.style.visibility = current === 0 ? 'hidden' : 'visible';
+    nextBtn.style.display = current === TOTAL_SCREENS-1 ? 'none' : 'inline-block';
+    nextBtn.textContent = current === TOTAL_SCREENS-2 ? 'See results →' : 'Next →';
+    window.scrollTo({top:0, behavior:'instant' in window ? 'instant' : 'auto'});
+    if (current === TOTAL_SCREENS-2) renderQuizQuestion();
+  }
+  backBtn.addEventListener('click', function(){ showScreen(current-1); });
+  nextBtn.addEventListener('click', function(){
+    if (current === TOTAL_SCREENS-2){ finishQuiz(); }
+    showScreen(current+1);
+  });
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i=a.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t=a[i]; a[i]=a[j]; a[j]=t;
+    }
+    return a;
+  }
+
+  /* ============ DIALOGUE CHECK ============ */
+  (function initDialogueCheck(){
+    var qs = [
+      {q:'What is Peter doing?', opts:['Cooking dinner','Shopping online','Doing homework'], a:1},
+      {q:'How many rubles has Peter got?', opts:['200','2000','20'], a:1},
+      {q:'What currency are the prices actually in?', opts:['Dollars','Pounds','Euros'], a:2},
+      {q:'True or false: Peter has enough rubles for the euro prices.', opts:['True','False'], a:1}
+    ];
+    var area = document.getElementById('dialogueQuizArea');
+    var scoreEl = document.getElementById('dialogueScore');
+    var score = 0;
+    qs.forEach(function(item){
+      var block = document.createElement('div');
+      block.className = 'dq-block';
+      var qEl = document.createElement('div');
+      qEl.className = 'dq-question';
+      qEl.textContent = item.q;
+      block.appendChild(qEl);
+      var opts = document.createElement('div');
+      opts.className = 'options';
+      item.opts.forEach(function(opt, i){
+        var b = document.createElement('button');
+        b.className = 'option-btn';
+        b.textContent = opt;
+        b.addEventListener('click', function(){
+          Array.from(opts.children).forEach(function(c){ c.disabled = true; });
+          if (i === item.a){
+            b.classList.add('correct');
+            score++;
+          } else {
+            b.classList.add('incorrect');
+            opts.children[item.a].classList.add('correct');
+          }
+          scoreEl.textContent = 'Score: ' + score + ' / ' + qs.length;
+        });
+        opts.appendChild(b);
+      });
+      block.appendChild(opts);
+      area.appendChild(block);
+    });
+  })();
+
+  /* ============ SENTENCE BUILDER ============ */
+  (function initSentenceBuilder(){
+    var sentences = [
+      'How much does it cost ?',
+      'It costs five pounds .',
+      'I have got two thousand rubles .',
+      'This T-shirt is too expensive .'
+    ];
+    var idx = 0;
+    var answerSlot = document.getElementById('sentenceAnswer');
+    var pool = document.getElementById('sentencePool');
+    var progressEl = document.getElementById('sentenceProgress');
+    var placed = [];
+
+    function load(){
+      var words = sentences[idx].split(' ');
+      placed = [];
+      answerSlot.innerHTML = '';
+      pool.innerHTML = '';
+      progressEl.textContent = 'Sentence ' + (idx+1) + ' of ' + sentences.length;
+      shuffle(words).forEach(function(w){
+        var t = document.createElement('div');
+        t.className = 'word-tile';
+        t.textContent = w;
+        t.addEventListener('click', function(){
+          if (t.classList.contains('placed')) return;
+          t.classList.add('placed');
+          placed.push({w:w, tile:t});
+          renderAnswer();
+        });
+        pool.appendChild(t);
+      });
+      renderAnswer();
+    }
+    function renderAnswer(){
+      answerSlot.innerHTML = '';
+      placed.forEach(function(p, i){
+        var t = document.createElement('div');
+        t.className = 'word-tile placed';
+        t.textContent = p.w;
+        t.addEventListener('click', function(){
+          placed.splice(i,1);
+          p.tile.classList.remove('placed');
+          renderAnswer();
+        });
+        answerSlot.appendChild(t);
+      });
+      if (placed.length === 0){
+        answerSlot.innerHTML = '<span style="color:var(--ink-soft); font-weight:700; align-self:center;">Tap words below</span>';
+      }
+    }
+    document.getElementById('sentenceReset').addEventListener('click', load);
+    document.getElementById('sentenceCheck').addEventListener('click', function(){
+      var built = placed.map(function(p){return p.w;}).join(' ');
+      if (built === sentences[idx]){
+        progressEl.textContent = '✅ Correct: "' + sentences[idx].replace(' .','.').replace(' ?','?') + '"';
+        progressEl.style.color = 'var(--good)';
+        setTimeout(function(){
+          progressEl.style.color = '';
+          idx = (idx+1) % sentences.length;
+          load();
+        }, 1000);
+      } else {
+        progressEl.textContent = '❌ Not quite — try again!';
+        progressEl.style.color = 'var(--bad)';
+        setTimeout(function(){ progressEl.style.color=''; progressEl.textContent = 'Sentence ' + (idx+1) + ' of ' + sentences.length; }, 900);
+      }
+    });
+    load();
+  })();
+
+  /* ============ EX1: MATCHING ============ */
+  (function initMatch(){
+    var symbols = [
+      {id:'usd', label:'$', match:'usa'},
+      {id:'gbp', label:'£', match:'uk'},
+      {id:'eur', label:'€', match:'eu'},
+      {id:'rub', label:'₽', match:'ru'}
+    ];
+    var countries = [
+      {id:'usa', label:'🇺🇸 USA'},
+      {id:'uk', label:'🇬🇧 UK'},
+      {id:'eu', label:'🇪🇺 EU'},
+      {id:'ru', label:'🇷🇺 Russia'}
+    ];
+    var left = document.getElementById('matchLeft');
+    var right = document.getElementById('matchRight');
+    var scoreEl = document.getElementById('matchScore');
+    var selLeft = null, selRight = null, matched = 0;
+
+    shuffle(symbols).forEach(function(s){
+      var b = document.createElement('div');
+      b.className = 'match-item';
+      b.textContent = s.label;
+      b.dataset.id = s.id;
+      b.dataset.match = s.match;
+      b.addEventListener('click', function(){ onPick(b, 'left'); });
+      left.appendChild(b);
+    });
+    shuffle(countries).forEach(function(c){
+      var b = document.createElement('div');
+      b.className = 'match-item';
+      b.textContent = c.label;
+      b.dataset.id = c.id;
+      b.addEventListener('click', function(){ onPick(b, 'right'); });
+      right.appendChild(b);
+    });
+
+    function onPick(el, side){
+      if (el.classList.contains('matched')) return;
+      if (side === 'left'){
+        if (selLeft) selLeft.classList.remove('selected');
+        selLeft = el; el.classList.add('selected');
+      } else {
+        if (selRight) selRight.classList.remove('selected');
+        selRight = el; el.classList.add('selected');
+      }
+      if (selLeft && selRight){
+        if (selLeft.dataset.match === selRight.dataset.id){
+          selLeft.classList.remove('selected'); selRight.classList.remove('selected');
+          selLeft.classList.add('matched'); selRight.classList.add('matched');
+          matched++;
+          scoreEl.textContent = 'Matched: ' + matched + ' / 4';
+          selLeft = null; selRight = null;
+        } else {
+          [selLeft, selRight].forEach(function(x){
+            x.classList.add('wrong');
+            setTimeout(function(){ x.classList.remove('wrong','selected'); }, 450);
+          });
+          selLeft = null; selRight = null;
+        }
+      }
+    }
+  })();
+
+  /* ============ EX2: MCQ ============ */
+  (function initMCQ(){
+    var opts = [
+      {text:'The flags of a country', correct:false},
+      {text:'The money a country uses', correct:true},
+      {text:'The food people eat', correct:false}
+    ];
+    var wrap = document.getElementById('ex2Options');
+    var explain = document.getElementById('ex2Explain');
+    opts.forEach(function(o){
+      var b = document.createElement('button');
+      b.className = 'option-btn';
+      b.textContent = o.text;
+      b.addEventListener('click', function(){
+        Array.from(wrap.children).forEach(function(c){ c.disabled = true; });
+        b.classList.add(o.correct ? 'correct' : 'incorrect');
+        if (!o.correct){
+          Array.from(wrap.children).forEach(function(c,i){ if(opts[i].correct) c.classList.add('correct'); });
+        }
+        explain.style.display = 'block';
+        explain.textContent = o.correct ? '✅ Correct! Currency is the money a country uses.' : '❌ Not quite — currency means the money a country uses.';
+      });
+      wrap.appendChild(b);
+    });
+  })();
+
+  /* ============ EX3: FILL BLANKS ============ */
+  (function initBlanks(){
+    var facts = [
+      {text:'1 dollar = ___ cents', answer:'100'},
+      {text:'1 pound = ___ pence', answer:'100'},
+      {text:'1 euro = ___ cents', answer:'100'}
+    ];
+    var area = document.getElementById('blanksArea');
+    facts.forEach(function(f, idx){
+      var row = document.createElement('div');
+      row.className = 'blank-row';
+      var parts = f.text.split('___');
+      row.innerHTML = parts[0] + '<input class="blank-input" data-idx="'+idx+'" type="text" inputmode="numeric">' + parts[1];
+      area.appendChild(row);
+    });
+    document.getElementById('checkBlanksBtn').addEventListener('click', function(){
+      var inputs = area.querySelectorAll('.blank-input');
+      var correctCount = 0;
+      inputs.forEach(function(inp){
+        var idx = parseInt(inp.dataset.idx,10);
+        var ok = inp.value.trim() === facts[idx].answer;
+        inp.classList.remove('correct','incorrect');
+        inp.classList.add(ok ? 'correct' : 'incorrect');
+        if (ok) correctCount++;
+      });
+      var fb = document.getElementById('blanksFeedback');
+      fb.style.display = 'block';
+      fb.textContent = correctCount === facts.length
+        ? '✅ Perfect! All currencies use 100 small units.'
+        : '✅ ' + correctCount + ' / ' + facts.length + ' correct — try the red ones again!';
+    });
+  })();
+
+  /* ============ EX4: TRUE/FALSE ============ */
+  (function initTF(){
+    var statements = [
+      {text:'In the USA, people use pounds.', answer:false},
+      {text:'One euro is 100 cents.', answer:true},
+      {text:'A penny is a small UK coin.', answer:true},
+      {text:'Rubles are used in France.', answer:false},
+      {text:'Coins are usually for small amounts of money.', answer:true}
+    ];
+    var list = document.getElementById('tfList');
+    var scoreEl = document.getElementById('tfScore');
+    var score = 0;
+    statements.forEach(function(s){
+      var card = document.createElement('div');
+      card.className = 'tf-card';
+      card.innerHTML = '<div class="tf-stmt">'+s.text+'</div><div class="tf-btns">'+
+        '<button class="tf-btn true-btn">True</button>'+
+        '<button class="tf-btn false-btn">False</button></div>';
+      var trueBtn = card.querySelector('.true-btn');
+      var falseBtn = card.querySelector('.false-btn');
+      function handle(picked){
+        trueBtn.disabled = true; falseBtn.disabled = true;
+        var correctBtn = s.answer ? trueBtn : falseBtn;
+        var pickedBtn = picked ? trueBtn : falseBtn;
+        if (picked === s.answer){
+          pickedBtn.classList.add('picked-correct');
+          score++;
+        } else {
+          pickedBtn.classList.add('picked-wrong');
+          correctBtn.classList.add('picked-correct');
+        }
+        scoreEl.textContent = 'Score: ' + score + ' / ' + statements.length;
+      }
+      trueBtn.addEventListener('click', function(){ handle(true); });
+      falseBtn.addEventListener('click', function(){ handle(false); });
+      list.appendChild(card);
+    });
+  })();
+
+  /* ============ EX5: SORTING COINS/NOTES ============ */
+  (function initSort(){
+    var items = [
+      {emoji:'💵', label:'$100', type:'note'},
+      {emoji:'🪙', label:'1¢', type:'coin'},
+      {emoji:'💷', label:'£5', type:'note'},
+      {emoji:'🪙', label:'1p', type:'coin'},
+      {emoji:'🧧', label:'₽100', type:'note'},
+      {emoji:'🪙', label:'₽10', type:'coin'}
+    ];
+    var grid = document.getElementById('sortGrid');
+    var scoreEl = document.getElementById('sortScore');
+    var score = 0;
+    items.forEach(function(it){
+      var card = document.createElement('div');
+      card.className = 'sort-card';
+      card.innerHTML = '<div class="sort-visual">'+it.emoji+'</div><div class="sort-label">'+it.label+'</div>'+
+        '<div class="sort-btns"><button class="sort-btn" data-t="coin">🪙 Coin</button><button class="sort-btn" data-t="note">💵 Note</button></div>';
+      var btns = card.querySelectorAll('.sort-btn');
+      btns.forEach(function(b){
+        b.addEventListener('click', function(){
+          btns.forEach(function(x){ x.disabled = true; });
+          var ok = b.dataset.t === it.type;
+          b.classList.add(ok ? 'correct' : 'incorrect');
+          if (!ok){
+            Array.from(btns).forEach(function(x){ if (x.dataset.t === it.type) x.classList.add('correct'); });
+          } else {
+            score++;
+          }
+          scoreEl.textContent = 'Score: ' + score + ' / ' + items.length;
+        });
+      });
+      grid.appendChild(card);
+    });
+  })();
+
+  /* ============ EX6: ORDER PRICES ============ */
+  (function initOrder(){
+    var items = [
+      {label:'Kite — $3', value:3},
+      {label:'Train — $15', value:15},
+      {label:'Helicopter — $26', value:26},
+      {label:'Camera — $46', value:46},
+      {label:'Phone — $100', value:100}
+    ];
+    var pool = document.getElementById('pricePool');
+    var seq = document.getElementById('priceSequence');
+    var sorted = items.slice().sort(function(a,b){ return a.value-b.value; });
+    var pointer = 0;
+    var placedAny = false;
+
+    shuffle(items).forEach(function(it){
+      var chip = document.createElement('button');
+      chip.className = 'price-chip';
+      chip.textContent = it.label;
+      chip.addEventListener('click', function(){
+        if (it.value === sorted[pointer].value){
+          if (!placedAny){ seq.innerHTML=''; placedAny = true; }
+          if (pointer > 0){
+            var arrow = document.createElement('span');
+            arrow.className = 'arrow-sep';
+            arrow.textContent = '→';
+            seq.appendChild(arrow);
+          }
+          var tag = document.createElement('span');
+          tag.className = 'seq-item';
+          tag.textContent = it.label;
+          seq.appendChild(tag);
+          chip.disabled = true;
+          pointer++;
+          if (pointer === sorted.length){
+            var done = document.createElement('div');
+            done.style.width = '100%';
+            done.style.marginTop = '8px';
+            done.style.fontWeight = '800';
+            done.style.color = 'var(--good)';
+            done.textContent = '🎉 Well done! That\'s the correct order.';
+            seq.appendChild(done);
+          }
+        } else {
+          chip.classList.add('shake');
+          setTimeout(function(){ chip.classList.remove('shake'); }, 350);
+        }
+      });
+      pool.appendChild(chip);
+    });
+  })();
+
+  /* ============ EX7: WORD SCRAMBLE ============ */
+  (function initScramble(){
+    var words = ['DOLLAR','POUND','EURO','RUBLE'];
+    var wordIndex = 0;
+    var answerSlot = document.getElementById('scrambleAnswer');
+    var pool = document.getElementById('scramblePool');
+    var progressEl = document.getElementById('scrambleProgress');
+    var placed = [];
+    var letters = [];
+
+    function loadWord(){
+      var w = words[wordIndex];
+      placed = [];
+      answerSlot.innerHTML = '';
+      pool.innerHTML = '';
+      progressEl.textContent = 'Word ' + (wordIndex+1) + ' of ' + words.length + ' — currency name';
+      letters = shuffle(w.split(''));
+      letters.forEach(function(ch, i){
+        var t = document.createElement('div');
+        t.className = 'letter-tile';
+        t.textContent = ch;
+        t.dataset.idx = i;
+        t.addEventListener('click', function(){
+          if (t.classList.contains('placed')) return;
+          t.classList.add('placed');
+          placed.push({ch:ch, tile:t});
+          renderAnswer();
+        });
+        pool.appendChild(t);
+      });
+      renderAnswer();
+    }
+    function renderAnswer(){
+      answerSlot.innerHTML = '';
+      placed.forEach(function(p, i){
+        var t = document.createElement('div');
+        t.className = 'letter-tile placed';
+        t.textContent = p.ch;
+        t.addEventListener('click', function(){
+          placed.splice(i,1);
+          p.tile.classList.remove('placed');
+          renderAnswer();
+        });
+        answerSlot.appendChild(t);
+      });
+      if (placed.length === 0){
+        answerSlot.innerHTML = '<span style="color:var(--ink-soft); font-weight:700; align-self:center;">Tap letters below</span>';
+      }
+    }
+    document.getElementById('scrambleReset').addEventListener('click', loadWord);
+    document.getElementById('scrambleCheck').addEventListener('click', function(){
+      var word = placed.map(function(p){return p.ch;}).join('');
+      if (word === words[wordIndex]){
+        progressEl.textContent = '✅ Correct — ' + words[wordIndex] + '!';
+        progressEl.style.color = 'var(--good)';
+        setTimeout(function(){
+          progressEl.style.color = '';
+          wordIndex = (wordIndex+1) % words.length;
+          loadWord();
+        }, 900);
+      } else {
+        progressEl.textContent = '❌ Try again!';
+        progressEl.style.color = 'var(--bad)';
+        setTimeout(function(){ progressEl.style.color=''; progressEl.textContent = 'Word ' + (wordIndex+1) + ' of ' + words.length + ' — currency name'; }, 900);
+      }
+    });
+    loadWord();
+  })();
+
+  /* ============ EX8: SHOPPING BUDGET ============ */
+  (function initShop(){
+    var budget = 51;
+    var items = [
+      {id:'doll', emoji:'🪆', name:'Doll', price:5},
+      {id:'truck', emoji:'🚚', name:'Truck', price:5},
+      {id:'kite', emoji:'🪁', name:'Kite', price:3},
+      {id:'heli', emoji:'🚁', name:'Helicopter', price:26},
+      {id:'train', emoji:'🚂', name:'Train', price:15},
+      {id:'camera', emoji:'📷', name:'Camera', price:46},
+      {id:'phone', emoji:'📱', name:'Phone', price:100}
+    ];
+    var grid = document.getElementById('shopGrid');
+    var totalEl = document.getElementById('budgetTotal');
+    var feedback = document.getElementById('shopFeedback');
+    var selected = {};
+
+    items.forEach(function(it){
+      var card = document.createElement('div');
+      card.className = 'shop-card';
+      card.innerHTML = '<div class="shop-emoji">'+it.emoji+'</div><div>'+it.name+'</div><div class="shop-price">$'+it.price+'</div>';
+      card.addEventListener('click', function(){
+        if (selected[it.id]){ delete selected[it.id]; card.classList.remove('selected'); }
+        else { selected[it.id] = it.price; card.classList.add('selected'); }
+        updateTotal();
+      });
+      grid.appendChild(card);
+    });
+    function currentTotal(){
+      return Object.values(selected).reduce(function(a,b){return a+b;},0);
+    }
+    function updateTotal(){
+      var t = currentTotal();
+      totalEl.textContent = '$' + t + ' / $' + budget;
+      totalEl.style.color = t > budget ? '#ffdada' : '#fff';
+    }
+    document.getElementById('checkShopBtn').addEventListener('click', function(){
+      var t = currentTotal();
+      var count = Object.keys(selected).length;
+      if (count === 0){
+        feedback.textContent = '🛒 Pick at least one toy first!';
+        feedback.style.color = 'var(--bad)';
+      } else if (t > budget){
+        feedback.textContent = '❌ Too expensive! That\'s $' + t + ' — over the $' + budget + ' budget.';
+        feedback.style.color = 'var(--bad)';
+      } else {
+        feedback.textContent = '✅ Great! Max can buy this for $' + t + '. Money left: $' + (budget - t) + '.';
+        feedback.style.color = 'var(--good)';
+      }
+    });
+    updateTotal();
+  })();
+
+  /* ============ EX9: MEMORY MATCH ============ */
+  (function initMemory(){
+    var pairs = [
+      {key:'usd', a:'$', b:'Dollar'},
+      {key:'gbp', a:'£', b:'Pound'},
+      {key:'eur', a:'€', b:'Euro'},
+      {key:'rub', a:'₽', b:'Ruble'}
+    ];
+    var cards = [];
+    pairs.forEach(function(p){
+      cards.push({key:p.key, label:p.a});
+      cards.push({key:p.key, label:p.b});
+    });
+    cards = shuffle(cards);
+    var grid = document.getElementById('memoryGrid');
+    var info = document.getElementById('memInfo');
+    var flipped = [];
+    var moves = 0, found = 0;
+    var lock = false;
+
+    cards.forEach(function(c){
+      var cell = document.createElement('div');
+      cell.className = 'mem-card';
+      cell.textContent = '❓';
+      cell.dataset.key = c.key;
+      cell.dataset.label = c.label;
+      cell.addEventListener('click', function(){
+        if (lock || cell.classList.contains('flipped') || cell.classList.contains('matched')) return;
+        cell.classList.add('flipped');
+        cell.textContent = c.label;
+        flipped.push(cell);
+        if (flipped.length === 2){
+          moves++;
+          lock = true;
+          var a = flipped[0], b = flipped[1];
+          if (a.dataset.key === b.dataset.key){
+            a.classList.add('matched'); b.classList.add('matched');
+            found++;
+            flipped = [];
+            lock = false;
+          } else {
+            setTimeout(function(){
+              a.classList.remove('flipped'); a.textContent = '❓';
+              b.classList.remove('flipped'); b.textContent = '❓';
+              flipped = [];
+              lock = false;
+            }, 700);
+          }
+          info.textContent = 'Moves: ' + moves + ' · Pairs found: ' + found + ' / 4';
+        }
+      });
+      grid.appendChild(cell);
+    });
+  })();
+
+  /* ============ EX10: TIC-TAC-TOE TRIVIA ============ */
+  (function initTTT(){
+    var questions = [
+      {q:'Symbol for dollar?', opts:['$','£','₽'], a:0},
+      {q:'Symbol for pound?', opts:['€','£','$'], a:1},
+      {q:'Symbol for euro?', opts:['₽','$','€'], a:2},
+      {q:'Symbol for ruble?', opts:['₽','£','€'], a:0},
+      {q:'1 dollar = ? cents', opts:['10','100','1000'], a:1},
+      {q:'Money used in the UK?', opts:['Euro','Ruble','Pound'], a:2},
+      {q:'Coins are for...', opts:['small amounts','only decoration','nothing'], a:0},
+      {q:'"How much does it ___?"', opts:['cost','costs','costing'], a:0},
+      {q:'Money used in Russia?', opts:['Ruble','Dollar','Euro'], a:0}
+    ];
+    var grid = document.getElementById('tttGrid');
+    var scoreEl = document.getElementById('tttScore');
+    var popup = document.getElementById('tttPopup');
+    var qEl = document.getElementById('tttQ');
+    var optsEl = document.getElementById('tttOptions');
+    var correctCount = 0;
+    var activeCell = null;
+
+    questions.forEach(function(item, idx){
+      var cell = document.createElement('button');
+      cell.className = 'ttt-cell';
+      cell.textContent = '?';
+      cell.addEventListener('click', function(){
+        if (cell.classList.contains('answered')) return;
+        activeCell = cell;
+        qEl.textContent = item.q;
+        optsEl.innerHTML = '';
+        shuffle(item.opts.map(function(o,i){return {text:o, correct:i===item.a};})).forEach(function(o){
+          var b = document.createElement('button');
+          b.className = 'option-btn';
+          b.textContent = o.text;
+          b.addEventListener('click', function(){
+            popup.classList.add('hidden');
+            activeCell.classList.add('answered');
+            if (o.correct){
+              activeCell.classList.add('correct');
+              activeCell.textContent = '✅';
+              correctCount++;
+            } else {
+              activeCell.classList.add('incorrect');
+              activeCell.textContent = '❌';
+            }
+            scoreEl.textContent = 'Correct: ' + correctCount + ' / ' + questions.length;
+          });
+          optsEl.appendChild(b);
+        });
+        popup.classList.remove('hidden');
+      });
+      grid.appendChild(cell);
+    });
+    popup.addEventListener('click', function(e){
+      if (e.target === popup) popup.classList.add('hidden');
+    });
+  })();
+
+  /* ============ QUIZ ============ */
+  var quizQuestions = [
+    {q:'What is currency?', opts:['The money a country uses','A type of food','A national flag'], a:0},
+    {q:'Which symbol is for the pound?', opts:['€','£','₽'], a:1},
+    {q:'How many cents are in one dollar?', opts:['10','50','100'], a:2},
+    {q:'What do you ask to find a price?', opts:['"Where is it?"','"How much does it cost?"','"What color is it?"'], a:1},
+    {q:'Which country uses rubles?', opts:['Russia','France','Canada'], a:0}
+  ];
+  var quizIndex = 0;
+  var quizScore = 0;
+  var quizAnswered = false;
+
+  function renderQuizQuestion(){
+    var area = document.getElementById('quizArea');
+    var progress = document.getElementById('quizProgress');
+    var title = document.getElementById('quizTitle');
+    if (quizIndex >= quizQuestions.length){
+      title.textContent = 'Quiz complete!';
+      progress.textContent = '';
+      area.innerHTML = '<div class="quiz-score-badge">⭐ Score: ' + quizScore + ' / ' + quizQuestions.length + '</div>' +
+        '<p style="margin-top:14px; font-weight:700;">Нажми «Next», чтобы увидеть результаты.</p>';
+      return;
+    }
+    title.textContent = 'Let\'s check what you learned!';
+    var item = quizQuestions[quizIndex];
+    progress.textContent = 'Question ' + (quizIndex+1) + ' of ' + quizQuestions.length;
+    area.innerHTML = '';
+    var qTitle = document.createElement('h3');
+    qTitle.className = 'display';
+    qTitle.style.fontSize = '20px';
+    qTitle.style.marginBottom = '12px';
+    qTitle.textContent = item.q;
+    area.appendChild(qTitle);
+    var optsWrap = document.createElement('div');
+    optsWrap.className = 'options';
+    item.opts.forEach(function(opt, i){
+      var b = document.createElement('button');
+      b.className = 'option-btn';
+      b.textContent = opt;
+      b.addEventListener('click', function(){
+        if (quizAnswered) return;
+        quizAnswered = true;
+        Array.from(optsWrap.children).forEach(function(c){ c.disabled = true; });
+        if (i === item.a){
+          b.classList.add('correct');
+          quizScore++;
+        } else {
+          b.classList.add('incorrect');
+          optsWrap.children[item.a].classList.add('correct');
+        }
+        setTimeout(function(){
+          quizIndex++;
+          quizAnswered = false;
+          renderQuizQuestion();
+        }, 900);
+      });
+      optsWrap.appendChild(b);
+    });
+    area.appendChild(optsWrap);
+  }
+
+  function finishQuiz(){
+    var scoreEl = document.getElementById('resultsScore');
+    var msgEl = document.getElementById('resultsMsg');
+    var emojiEl = document.getElementById('resultsEmoji');
+    scoreEl.textContent = quizScore + ' / ' + quizQuestions.length;
+    if (quizScore === quizQuestions.length){
+      emojiEl.textContent = '🏆';
+      msgEl.textContent = 'Perfect score! You are a Money Master!';
+    } else if (quizScore >= quizQuestions.length - 1){
+      emojiEl.textContent = '🌟';
+      msgEl.textContent = 'Excellent work! Almost perfect!';
+    } else if (quizScore >= quizQuestions.length/2){
+      emojiEl.textContent = '👍';
+      msgEl.textContent = 'Good job! Review the text and try again.';
+    } else {
+      emojiEl.textContent = '💪';
+      msgEl.textContent = 'Keep practising — you\'ll get it next time!';
+    }
+  }
+
+  document.getElementById('restartBtn').addEventListener('click', function(){
+    location.reload();
+  });
+
+  showScreen(0);
+})();
+</script>
+</body>
+</html>
